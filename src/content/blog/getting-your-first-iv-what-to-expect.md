@@ -13,7 +13,7 @@ faqs:
   - q: "What should I do before my appointment?"
     a: "Eat a light meal, drink some water, and wear comfortable clothing with easy access to your arm. Being a little hydrated beforehand can make placing the IV easier."
   - q: "Can I choose where the appointment happens?"
-    a: "Yes. We are a mobile service, so we come to your home, office, or hotel anywhere in our Treasure Coast service area. Just pick a comfortable spot with a place to sit or recline."
+    a: "Yes. We are a mobile service, so we come to your home or office anywhere in our Treasure Coast service area. Just pick a comfortable spot with a place to sit or recline."
   - q: "Is IV therapy safe?"
     a: "IV therapy is generally well tolerated when administered by a licensed professional. Every session is provided by a Registered Nurse under the supervision of a medical director, and you will complete a medical screening first. IV therapy is not intended to diagnose, treat, cure, or prevent any disease."
 ---

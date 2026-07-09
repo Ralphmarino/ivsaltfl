@@ -238,47 +238,41 @@ export default function BookingWizard() {
    * ---------------------------------------------------------------- */
   return (
     <div ref={topRef} className="mx-auto max-w-5xl scroll-mt-28 pb-28 lg:pb-0">
-      {/* Progress — bubbles on top, progress line below (never through the bubbles) */}
-      <div className="mb-10 md:mb-12">
-        <ol className="flex items-center justify-between gap-1 px-1" aria-label="Booking progress">
-          {STEPS.map((label, i) => {
-            const state = i < step ? 'done' : i === step ? 'current' : 'upcoming';
-            return (
-              <li key={label}>
-                <button
-                  type="button"
-                  onClick={() => goTo(i)}
-                  disabled={i > step}
-                  aria-current={state === 'current' ? 'step' : undefined}
-                  className={`group flex items-center gap-2 rounded-full transition ${i > step ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+      {/* Progress */}
+      <ol className="mb-10 flex items-center justify-between gap-1 px-1 md:mb-12" aria-label="Booking progress">
+        {STEPS.map((label, i) => {
+          const state = i < step ? 'done' : i === step ? 'current' : 'upcoming';
+          return (
+            <li key={label} className="flex flex-1 items-center last:flex-none">
+              <button
+                type="button"
+                onClick={() => goTo(i)}
+                disabled={i > step}
+                aria-current={state === 'current' ? 'step' : undefined}
+                className={`group flex shrink-0 items-center gap-2 rounded-full transition ${i > step ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+              >
+                <span
+                  className={`grid h-9 w-9 place-items-center rounded-full border text-sm font-bold transition ${
+                    state === 'done'
+                      ? 'border-transparent bg-gradient-to-br from-teal to-pink text-white'
+                      : state === 'current'
+                        ? 'border-teal-bright bg-teal/10 text-teal-bright'
+                        : 'border-white/15 text-mist-dim'
+                  }`}
                 >
-                  <span
-                    className={`grid h-9 w-9 place-items-center rounded-full border text-sm font-bold transition ${
-                      state === 'done'
-                        ? 'border-transparent bg-gradient-to-br from-teal to-pink text-white'
-                        : state === 'current'
-                          ? 'border-teal-bright bg-teal/10 text-teal-bright'
-                          : 'border-white/15 text-mist-dim'
-                    }`}
-                  >
-                    {state === 'done' ? <Icon name="check" size={18} /> : i + 1}
-                  </span>
-                  <span className={`hidden text-sm font-semibold sm:inline ${state === 'upcoming' ? 'text-mist-dim' : 'text-cream'}`}>
-                    {label}
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
-        {/* progress track sits BELOW the bubbles */}
-        <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-teal to-pink transition-[width] duration-500"
-            style={{ width: `${(step / (STEPS.length - 1)) * 100}%` }}
-          />
-        </div>
-      </div>
+                  {state === 'done' ? <Icon name="check" size={18} /> : i + 1}
+                </span>
+                <span className={`hidden text-sm font-semibold sm:inline ${state === 'upcoming' ? 'text-mist-dim' : 'text-cream'}`}>
+                  {label}
+                </span>
+              </button>
+              {i < STEPS.length - 1 && (
+                <span className={`mx-3 h-0.5 flex-1 rounded-full sm:mx-5 ${i < step ? 'bg-gradient-to-r from-teal to-pink' : 'bg-white/10'}`} />
+              )}
+            </li>
+          );
+        })}
+      </ol>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
         {/* Main panel */}

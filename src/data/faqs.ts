@@ -22,8 +22,8 @@ export const homeFaqs: FAQ[] = [
     a: 'Most infusions take about 45 to 60 minutes. NAD+ therapy takes longer, up to about 4 hours, because it is infused slowly for comfort.',
   },
   {
-    q: 'Can you come to my home, office, or hotel?',
-    a: 'Yes. We bring everything needed for a safe, relaxing session wherever you are most comfortable, whether that is your home, office, or hotel.',
+    q: 'Can you come to my home or office?',
+    a: 'Yes. We bring everything needed for a safe, relaxing session wherever you are most comfortable, whether that is your home or your office.',
   },
   {
     q: 'Can I book for more than one person?',
