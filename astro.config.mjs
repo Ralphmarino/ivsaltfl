@@ -4,8 +4,13 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// The public production URL. Update if the domain changes.
-const SITE = 'https://ivsaltfl.com';
+// Use the URL Netlify is actually serving (its `URL` env var = the site's
+// primary domain, i.e. your custom domain once set, otherwise the
+// *.netlify.app address). This makes canonical links and social-share images
+// resolve on whatever domain is live right now, and auto-switches to
+// ivsaltfl.com when you make it the primary domain in Netlify. Falls back to
+// the production domain for local builds.
+const SITE = process.env.URL || 'https://ivsaltfl.com';
 
 // https://astro.build/config
 export default defineConfig({
