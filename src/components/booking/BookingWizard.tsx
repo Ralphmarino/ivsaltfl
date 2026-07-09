@@ -27,19 +27,27 @@ const emptyDetails: Details = {
 
 const STEPS = ['Therapy', 'Add-Ons', 'Date & Time', 'Your Details', 'Review'];
 
-const TIME_SLOTS = [
-  'Earliest available', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM',
-  '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM',
-];
+const TIME_SLOTS = site.bookingTimes;
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const digits = (s: string) => s.replace(/\D/g, '');
-const todayISO = () => {
-  const d = new Date();
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-  return d.toISOString().slice(0, 10);
-};
 const money = (n: number) => `$${n.toLocaleString('en-US')}`;
+
+/** Next N available weekdays (Mon–Fri), excluding weekends and blackout dates. */
+function availableDates(windowDays: number, blackout: string[]): { iso: string; label: string }[] {
+  const out: { iso: string; label: string }[] = [];
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  for (let i = 0; i < windowDays; i++) {
+    d.setDate(d.getDate() + 1); // start from tomorrow
+    const day = d.getDay();
+    if (day === 0 || day === 6) continue; // Sunday / Saturday
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    if (blackout.includes(iso)) continue;
+    out.push({ iso, label: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }) });
+  }
+  return out;
+}
 
 /* ------------------------------------------------------------------ *
  *  Component
@@ -87,6 +95,9 @@ export default function BookingWizard() {
   const depositTotal = site.depositAmount * partySize;
   const stateOk = details.state === 'FL';
   const nadOverLimit = serviceId === 'nad-therapy' && partySize > site.maxNadPerVisit;
+
+  // Available weekday dates (excludes weekends + blackout dates).
+  const dateOptions = useMemo(() => availableDates(site.bookingWindowDays, site.blackoutDates as string[]), []);
 
   /* ---------- validation ---------- */
   function validate(target: number): boolean {
@@ -383,11 +394,15 @@ export default function BookingWizard() {
           {/* STEP 3 — Date & time */}
           {step === 2 && (
             <section aria-labelledby="step-when">
-              <StepHead id="step-when" eyebrow="Step 3" title="Pick a preferred time" hint="We'll confirm the exact time with you. Times are a preference, not a guarantee." />
+              <StepHead id="step-when" eyebrow="Step 3" title="Pick a preferred time" hint={`We're available ${site.bookingHoursLabel}. We'll confirm the exact time with you.`} />
               <div className="mt-6 grid gap-6">
-                <Field label="Preferred date" error={errors.date} htmlFor="date">
-                  <input id="date" type="date" min={todayISO()} value={details.date}
-                    onChange={(e) => setField('date', e.target.value)} className="input" />
+                <Field label="Preferred date (Mon–Fri)" error={errors.date} htmlFor="date">
+                  <select id="date" value={details.date} onChange={(e) => setField('date', e.target.value)} className="input">
+                    <option value="">Select a date…</option>
+                    {dateOptions.map((d) => (
+                      <option key={d.iso} value={d.iso}>{d.label}</option>
+                    ))}
+                  </select>
                 </Field>
                 <div>
                   <label className="label">Preferred time {errors.time && <span className="text-pink-bright">— {errors.time}</span>}</label>

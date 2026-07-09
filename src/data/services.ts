@@ -98,7 +98,7 @@ export const services: Service[] = [
     name: 'NAD+ Therapy',
     price: 300,
     priceFrom: true,
-    duration: '4 hours',
+    duration: '2-4 hours',
     icon: 'cell',
     iconSrc: '/assets/icon-nad.svg',
     description:

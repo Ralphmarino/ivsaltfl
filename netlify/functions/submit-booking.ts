@@ -17,6 +17,7 @@ import { validateBooking, money, formatAddress } from './lib/types';
 import { ownerEmail, customerEmail } from './lib/emails';
 import { sendEmail, sendSms } from './lib/notify';
 import { createCalendarEvent } from './lib/google-calendar';
+import { buildIcs, icsBase64, durationToMinutes } from './lib/ics';
 
 const SITE_URL = process.env.SITE_URL || 'https://ivsaltfl.com';
 const OWNER_EMAIL = process.env.OWNER_EMAIL || 'ivsaltfl@gmail.com';
@@ -70,6 +71,32 @@ export default async (req: Request, _context: Context): Promise<Response> => {
   const owner = ownerEmail(data, SITE_URL);
   const customer = customerEmail(data, SITE_URL, CONSENT_URL);
 
+  // Calendar invite (.ics) attached to both emails so each side can add it.
+  const durMin = durationToMinutes(data.service?.duration ?? '90 min');
+  const uidBase = `${data.preferred.date}-${(data.preferred.time || '').replace(/\s/g, '')}-${data.customer.email}`.replace(/[^a-zA-Z0-9@.\-]/g, '');
+  const custIcs = buildIcs({
+    uid: `cust-${uidBase}@ivsaltfl.com`,
+    title: `IV Salt Rejuvenation — ${data.service?.name ?? 'IV Therapy'} (requested)`,
+    description: `Your requested mobile IV session. NOT confirmed until you complete the consent form and deposit: ${CONSENT_URL}\\n\\nQuestions? Call or text 772-222-7108.`,
+    location: formatAddress(data.customer),
+    dateISO: data.preferred.date,
+    time: data.preferred.time,
+    durationMinutes: durMin,
+    status: 'TENTATIVE',
+  });
+  const ownerIcs = buildIcs({
+    uid: `owner-${uidBase}@ivsaltfl.com`,
+    title: `[REQUEST] ${data.customer.fullName} — ${data.service?.name ?? 'IV Therapy'}`,
+    description: `Unconfirmed booking request.\\nClient: ${data.customer.fullName}\\nPhone: ${data.customer.phone}\\nEmail: ${data.customer.email}\\nGuests: ${data.partySize ?? 1}\\nEst. total: ${money(data.estimatedTotal)} · Deposit: ${money(data.deposit)}`,
+    location: formatAddress(data.customer),
+    dateISO: data.preferred.date,
+    time: data.preferred.time,
+    durationMinutes: durMin,
+    status: 'TENTATIVE',
+  });
+  const custAttach = [{ filename: 'appointment.ics', content: icsBase64(custIcs), contentType: 'text/calendar' }];
+  const ownerAttach = [{ filename: 'booking-request.ics', content: icsBase64(ownerIcs), contentType: 'text/calendar' }];
+
   const partyNote = (data.partySize ?? 1) > 1 ? ` [${data.partySize} guests]` : '';
   const smsOwnerBody =
     `New IV booking request (UNCONFIRMED): ${data.customer.fullName}${partyNote}, ${data.service?.name} ` +
@@ -81,8 +108,8 @@ export default async (req: Request, _context: Context): Promise<Response> => {
 
   // Fire all channels in parallel; none can block another.
   const [ownerMail, custMail, calendar, ownerSms, custSms] = await Promise.all([
-    sendEmail({ to: OWNER_EMAIL, subject: owner.subject, html: owner.html, text: owner.text, replyTo: data.customer.email }),
-    sendEmail({ to: data.customer.email, subject: customer.subject, html: customer.html, text: customer.text, replyTo: OWNER_EMAIL }),
+    sendEmail({ to: OWNER_EMAIL, subject: owner.subject, html: owner.html, text: owner.text, replyTo: data.customer.email, attachments: ownerAttach }),
+    sendEmail({ to: data.customer.email, subject: customer.subject, html: customer.html, text: customer.text, replyTo: OWNER_EMAIL, attachments: custAttach }),
     createCalendarEvent(data),
     sendSms({ to: SARA_PHONE, body: smsOwnerBody }),
     sendSms({ to: data.customer.phone, body: smsCustomerBody }),

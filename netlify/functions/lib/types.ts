@@ -26,6 +26,9 @@ const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /** We only serve Florida. */
 const SERVICE_STATE = 'FL';
 
+/** Booking is Monday–Friday, 9 AM to 3 PM (keep in sync with site.bookingTimes). */
+const ALLOWED_TIMES = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'];
+
 /**
  * Validate a booking. `spam` is true when the honeypot was filled (silently
  * drop). `outOfArea` is true for non-Florida requests (reject).
@@ -63,7 +66,13 @@ export function validateBooking(body: unknown): {
       return { ok: false, outOfArea: true, errors: ['Outside service area (Florida only).'] };
     }
   }
-  if (!b.preferred?.date) errors.push('Missing preferred date.');
+  if (!b.preferred?.date) {
+    errors.push('Missing preferred date.');
+  } else {
+    const dow = new Date(`${b.preferred.date}T12:00:00Z`).getUTCDay();
+    if (dow === 0 || dow === 6) errors.push('Appointments are Monday to Friday only.');
+  }
+  if (b.preferred?.time && !ALLOWED_TIMES.includes(b.preferred.time)) errors.push('Invalid appointment time.');
 
   if (errors.length) return { ok: false, errors };
   return { ok: true, errors: [], data: b as BookingPayload };

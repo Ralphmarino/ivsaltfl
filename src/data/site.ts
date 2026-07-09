@@ -39,6 +39,17 @@ export const site = {
   maxNadPerVisit: 2,
   consentFormUrl: 'https://form.jotform.com/261876510047155',
 
+  // Availability — Monday–Friday only, 9 AM to 3 PM.
+  bookingTimes: ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM'],
+  bookingHoursLabel: 'Monday to Friday, 9 AM to 3 PM',
+  // How many days ahead to offer in the date picker.
+  bookingWindowDays: 45,
+  // Days Sara is unavailable (holidays, time off). Format: 'YYYY-MM-DD'.
+  // Add or remove dates here to block them from the booking calendar.
+  blackoutDates: [
+    // '2026-12-25', // example: Christmas
+  ] as string[],
+
   // Compliance copy shown across the site
   medicalDisclaimer:
     'All IV therapies are administered by a licensed Registered Nurse under the supervision of a medical director. Clients must complete a medical screening and consent form prior to treatment. IV therapy services are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary.',

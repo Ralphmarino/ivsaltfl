@@ -19,7 +19,7 @@ export const homeFaqs: FAQ[] = [
   },
   {
     q: 'How long does a session take?',
-    a: 'Most infusions take about 45 to 60 minutes. NAD+ therapy takes longer, up to about 4 hours, because it is infused slowly for comfort.',
+    a: 'Most infusions take about 45 to 60 minutes. NAD+ therapy takes longer, about 2 to 4 hours, because it is infused slowly for comfort.',
   },
   {
     q: 'Can you come to my home or office?',

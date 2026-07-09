@@ -9,7 +9,7 @@ faqs:
   - q: "Does getting an IV hurt?"
     a: "Most people feel a quick pinch when the small catheter is placed, similar to a routine blood draw. After that, the IV itself is usually comfortable. Your nurse will do everything possible to keep you at ease."
   - q: "How long does a session take?"
-    a: "Most infusions take about 45 to 60 minutes. NAD+ therapy is infused more slowly for comfort and can take up to about 4 hours. Your nurse will give you a time estimate when your therapy is confirmed."
+    a: "Most infusions take about 45 to 60 minutes. NAD+ therapy is infused more slowly for comfort and can take about 2 to 4 hours. Your nurse will give you a time estimate when your therapy is confirmed."
   - q: "What should I do before my appointment?"
     a: "Eat a light meal, drink some water, and wear comfortable clothing with easy access to your arm. Being a little hydrated beforehand can make placing the IV easier."
   - q: "Can I choose where the appointment happens?"

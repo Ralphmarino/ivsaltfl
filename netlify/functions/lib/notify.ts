@@ -18,6 +18,7 @@ export async function sendEmail(opts: {
   html: string;
   text: string;
   replyTo?: string;
+  attachments?: Array<{ filename: string; content: string; contentType?: string }>;
 }): Promise<ChannelResult> {
   const apiKey = process.env.RESEND_API_KEY;
   // FROM_EMAIL must be an address on a domain verified in Resend,
@@ -36,6 +37,7 @@ export async function sendEmail(opts: {
         html: opts.html,
         text: opts.text,
         ...(opts.replyTo ? { reply_to: opts.replyTo } : {}),
+        ...(opts.attachments ? { attachments: opts.attachments } : {}),
       }),
     });
     if (!res.ok) return { ok: false, error: `Resend ${res.status}: ${await res.text()}` };
