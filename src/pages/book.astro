@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import BookingWizard from '../components/booking/BookingWizard.tsx';
+import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 ---
 
@@ -20,6 +21,10 @@ import { site } from '../data/site';
         <p class="mt-4 text-mist">
           It takes about two minutes. We'll follow up with a confirmation, a quick consent form, and a
           ${site.depositAmount} deposit to lock in your appointment.
+        </p>
+        <p class="mx-auto mt-4 inline-flex flex-wrap items-center justify-center gap-2 rounded-full border border-teal/25 bg-teal/5 px-4 py-2 text-sm text-mist">
+          <Icon name="heart" size={15} class="text-teal-bright" />
+          Booking for a group? Add up to {site.maxPartySize} guests at the “Your Details” step.
         </p>
       </div>
     </div>
