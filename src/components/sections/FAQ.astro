@@ -1,0 +1,52 @@
+---
+import { homeFaqs } from '../../data/faqs';
+import Icon from '../Icon.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: homeFaqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<section id="faq" class="relative scroll-mt-28 py-20 md:py-24">
+  <div class="container-x">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <p class="eyebrow eyebrow-center justify-center">Questions & Answers</p>
+      <h2 class="mt-4 font-display text-4xl md:text-5xl">Frequently asked <span class="text-gradient">questions</span></h2>
+      <p class="mt-4 text-mist">Everything you need to know before your first mobile IV session.</p>
+    </div>
+
+    <div class="mx-auto mt-12 max-w-3xl space-y-3">
+      {homeFaqs.map((f, i) => (
+        <details class="faq-item card overflow-hidden rounded-2xl" data-reveal data-reveal-delay={(((i % 4) + 1)).toString()}>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-display text-lg text-cream">
+            <span>{f.q}</span>
+            <span class="faq-icon grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/12 text-teal-bright transition-transform duration-300">
+              <Icon name="plus" size={18} />
+            </span>
+          </summary>
+          <div class="px-5 pb-5 pt-0 text-mist leading-relaxed">{f.a}</div>
+        </details>
+      ))}
+    </div>
+
+    <p class="mt-10 text-center text-mist">
+      Still have questions?
+      <a href="/#contact" class="text-teal-bright underline underline-offset-4 hover:text-teal">Get in touch</a> —
+      we're happy to help.
+    </p>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</section>
+
+<style>
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item[open] .faq-icon { transform: rotate(45deg); border-color: rgba(41, 196, 214, 0.5); }
+  .faq-item[open] { border-color: rgba(41, 196, 214, 0.3); }
+</style>

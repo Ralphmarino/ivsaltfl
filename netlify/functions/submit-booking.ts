@@ -40,7 +40,17 @@ export default async (req: Request, _context: Context): Promise<Response> => {
     return json(400, { ok: false, error: 'Invalid JSON' });
   }
 
-  const { ok, errors, data } = validateBooking(body);
+  const { ok, errors, data, spam, outOfArea } = validateBooking(body);
+  // Honeypot hit: pretend success so bots don't learn, but send nothing.
+  if (spam) {
+    console.warn('🚫 Spam booking dropped (honeypot).');
+    return json(200, { ok: true });
+  }
+  // Non-Florida request: reject (we only serve FL).
+  if (outOfArea) {
+    console.warn('🚫 Out-of-area booking rejected (non-FL).');
+    return json(422, { ok: false, error: 'We currently serve Florida (the Treasure Coast) only.' });
+  }
   if (!ok || !data) return json(422, { ok: false, error: 'Validation failed', details: errors });
 
   // Always log the booking so it is never lost, even mid-setup.
@@ -51,15 +61,18 @@ export default async (req: Request, _context: Context): Promise<Response> => {
     address: formatAddress(data.customer),
     service: data.service?.name,
     addOns: data.addOns.map((a) => a.name),
+    partySize: data.partySize ?? 1,
     total: data.estimatedTotal,
+    deposit: data.deposit,
     preferred: data.preferred,
   }));
 
   const owner = ownerEmail(data, SITE_URL);
   const customer = customerEmail(data, SITE_URL, CONSENT_URL);
 
+  const partyNote = (data.partySize ?? 1) > 1 ? ` [${data.partySize} guests]` : '';
   const smsOwnerBody =
-    `New IV booking request (UNCONFIRMED): ${data.customer.fullName}, ${data.service?.name} ` +
+    `New IV booking request (UNCONFIRMED): ${data.customer.fullName}${partyNote}, ${data.service?.name} ` +
     `${money(data.estimatedTotal)}, ${data.preferred.date} ${data.preferred.time}. ` +
     `${data.customer.phone}. ${formatAddress(data.customer)}`;
   const smsCustomerBody =

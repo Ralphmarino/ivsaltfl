@@ -21,13 +21,22 @@ export const site = {
   // Social
   facebook: 'https://www.facebook.com/profile.php?id=61591585116803',
 
+  // Announcement bar (top of every page)
+  announcement: 'Now taking appointments',
+
   // Service area
   serviceArea: 'Serving Martin County — Port St. Lucie, Stuart & the Treasure Coast',
   serviceAreaShort: 'Port St. Lucie, Stuart & the Treasure Coast',
   counties: ['Martin County', 'St. Lucie County'],
+  // No travel fee within these cities (per travel policy)
+  noFeeCities: ['Port St. Lucie', 'Stuart', 'Palm City', 'Jensen Beach'],
+  // We only serve Florida — used to block out-of-state booking requests
+  serviceState: 'FL',
 
   // Booking / deposit
   depositAmount: 50,
+  maxPartySize: 4,
+  maxNadPerVisit: 2,
   consentFormUrl: 'https://form.jotform.com/261876510047155',
 
   // Compliance copy shown across the site

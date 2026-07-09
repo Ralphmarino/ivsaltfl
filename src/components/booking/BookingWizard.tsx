@@ -50,6 +50,8 @@ export default function BookingWizard() {
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [boostChoices, setBoostChoices] = useState<string[]>([]);
   const [details, setDetails] = useState<Details>(emptyDetails);
+  const [partySize, setPartySize] = useState(1);
+  const [hp, setHp] = useState(''); // honeypot — real users never fill this
   const [consent, setConsent] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -81,6 +83,11 @@ export default function BookingWizard() {
     return base + add;
   }, [service, chosenAddOns]);
 
+  // Deposit is per person; state must be FL (we only serve Florida).
+  const depositTotal = site.depositAmount * partySize;
+  const stateOk = details.state === 'FL';
+  const nadOverLimit = serviceId === 'nad-therapy' && partySize > site.maxNadPerVisit;
+
   /* ---------- validation ---------- */
   function validate(target: number): boolean {
     const e: Record<string, string> = {};
@@ -98,6 +105,9 @@ export default function BookingWizard() {
       if (!details.address.trim()) e.address = 'Street address is required.';
       if (!details.city.trim()) e.city = 'City is required.';
       if (digits(details.zip).length < 5) e.zip = 'Enter a valid ZIP code.';
+      if (!stateOk) e.state = `We currently serve Florida only — ${site.serviceAreaShort}.`;
+      if (nadOverLimit)
+        e.party = `We can administer up to ${site.maxNadPerVisit} NAD+ infusions per visit. For a larger NAD+ group, please call us at ${site.phone}.`;
     }
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -145,19 +155,21 @@ export default function BookingWizard() {
         price: a.price,
         options: a.id === 'extra-boost' ? boostChoices : undefined,
       })),
-      estimatedTotal: estTotal,
-      deposit: site.depositAmount,
+      partySize,
+      estimatedTotal: estTotal * partySize,
+      deposit: depositTotal,
       customer: {
         fullName: details.fullName.trim(),
         phone: details.phone.trim(),
         email: details.email.trim(),
         address: [details.address.trim(), details.address2.trim()].filter(Boolean).join(', '),
         city: details.city.trim(),
-        state: details.state.trim(),
+        state: 'FL',
         zip: details.zip.trim(),
       },
       preferred: { date: details.date, time: details.time },
       notes: details.notes.trim(),
+      _hp: hp, // honeypot
       submittedAt: new Date().toISOString(),
     };
 
@@ -225,9 +237,9 @@ export default function BookingWizard() {
    *  Wizard
    * ---------------------------------------------------------------- */
   return (
-    <div ref={topRef} className="mx-auto max-w-5xl scroll-mt-28">
+    <div ref={topRef} className="mx-auto max-w-5xl scroll-mt-28 pb-28 lg:pb-0">
       {/* Progress */}
-      <ol className="mb-8 flex items-center justify-between gap-1" aria-label="Booking progress">
+      <ol className="mb-10 flex items-center justify-between gap-1 px-1 md:mb-12" aria-label="Booking progress">
         {STEPS.map((label, i) => {
           const state = i < step ? 'done' : i === step ? 'current' : 'upcoming';
           return (
@@ -394,20 +406,60 @@ export default function BookingWizard() {
                 <Field label="Apt, suite, unit (optional)" htmlFor="address2">
                   <input id="address2" autoComplete="address-line2" value={details.address2} onChange={(e) => setField('address2', e.target.value)} className="input" placeholder="Apt 4B" />
                 </Field>
-                <div className="grid gap-5 sm:grid-cols-[1fr_6rem_8rem]">
+                <div className="grid gap-5 sm:grid-cols-[1fr_9rem_8rem]">
                   <Field label="City" error={errors.city} htmlFor="city">
                     <input id="city" autoComplete="address-level2" value={details.city} onChange={(e) => setField('city', e.target.value)} className="input" placeholder="Stuart" />
                   </Field>
                   <Field label="State" htmlFor="state">
-                    <input id="state" autoComplete="address-level1" value={details.state} onChange={(e) => setField('state', e.target.value)} className="input" />
+                    <select id="state" autoComplete="address-level1" value={details.state} onChange={(e) => setField('state', e.target.value)} className="input">
+                      <option value="FL">Florida</option>
+                      <option value="OTHER">Outside Florida</option>
+                    </select>
                   </Field>
                   <Field label="ZIP" error={errors.zip} htmlFor="zip">
                     <input id="zip" inputMode="numeric" autoComplete="postal-code" value={details.zip} onChange={(e) => setField('zip', e.target.value)} className="input" placeholder="34994" />
                   </Field>
                 </div>
+
+                {!stateOk && (
+                  <div role="alert" className="rounded-2xl border border-pink/40 bg-pink/10 p-4 text-sm text-cream">
+                    We're a mobile service on the Treasure Coast and currently serve <strong>Florida only</strong> ({site.serviceAreaShort}).
+                    If you're in our area, please choose <strong>Florida</strong> above. Questions?{' '}
+                    <a href={site.phoneHref} className="font-semibold underline">{site.phone}</a>.
+                  </div>
+                )}
+
+                {/* Party size */}
+                <div>
+                  <label className="label">How many guests this visit?</label>
+                  <div className="mt-2 flex flex-wrap gap-2" role="radiogroup" aria-label="Number of guests">
+                    {Array.from({ length: site.maxPartySize }, (_, n) => n + 1).map((n) => {
+                      const on = partySize === n;
+                      return (
+                        <button key={n} type="button" role="radio" aria-checked={on} onClick={() => setPartySize(n)}
+                          className={`h-11 w-11 rounded-xl border text-sm font-bold transition ${on ? 'border-transparent bg-gradient-to-br from-teal to-pink text-white' : 'border-white/15 text-mist hover:border-white/35'}`}>
+                          {n}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="mt-2 text-xs leading-relaxed text-mist-dim">
+                    We can treat up to {site.maxPartySize} guests per visit (up to {site.maxNadPerVisit} NAD+ at a time).
+                    Each guest completes their own consent form and ${site.depositAmount} deposit, and we'll confirm each
+                    person's therapy with you.
+                  </p>
+                  {errors.party && <p role="alert" className="mt-2 text-sm text-pink-bright">{errors.party}</p>}
+                </div>
+
                 <Field label="Anything we should know? (optional)" htmlFor="notes">
-                  <textarea id="notes" rows={3} value={details.notes} onChange={(e) => setField('notes', e.target.value)} className="input resize-none" placeholder="Parking notes, health notes, questions…" />
+                  <textarea id="notes" rows={3} value={details.notes} onChange={(e) => setField('notes', e.target.value)} className="input resize-none" placeholder="Parking notes, health notes, guests' therapies, questions…" />
                 </Field>
+
+                {/* Honeypot: hidden from users, catches bots */}
+                <div aria-hidden="true" className="absolute h-0 w-0 overflow-hidden opacity-0" style={{ position: 'absolute', left: '-9999px' }}>
+                  <label htmlFor="company">Company (leave blank)</label>
+                  <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" value={hp} onChange={(e) => setHp(e.target.value)} />
+                </div>
               </div>
             </section>
           )}
@@ -438,6 +490,9 @@ export default function BookingWizard() {
                 <ReviewRow label="Preferred" onEdit={() => setStep(2)}>
                   <span className="text-cream">{details.date || '—'} · {details.time || '—'}</span>
                 </ReviewRow>
+                <ReviewRow label="Guests" onEdit={() => setStep(3)}>
+                  <span className="text-cream">{partySize} {partySize === 1 ? 'person' : 'people'}</span>
+                </ReviewRow>
                 <ReviewRow label="Contact" onEdit={() => setStep(3)}>
                   <div className="text-cream">
                     <div>{details.fullName}</div>
@@ -447,19 +502,33 @@ export default function BookingWizard() {
                 </ReviewRow>
               </div>
 
-              <div className="mt-5 flex items-center justify-between rounded-2xl border border-gold/25 bg-gold/5 px-5 py-4">
-                <span className="text-sm text-mist">Estimated total<span className="block text-xs text-mist-dim">Final total confirmed by your nurse</span></span>
-                <span className="font-display text-2xl text-gold-bright">{service?.priceFrom || chosenAddOns.length ? '~' : ''}{money(estTotal)}</span>
+              <div className="mt-5 space-y-2 rounded-2xl border border-gold/25 bg-gold/5 px-5 py-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-mist">
+                    Estimated total{partySize > 1 ? ` (${partySize} guests)` : ''}
+                    <span className="block text-xs text-mist-dim">Final total confirmed by your nurse</span>
+                  </span>
+                  <span className="font-display text-2xl text-gold-bright">{service?.priceFrom || chosenAddOns.length || partySize > 1 ? '~' : ''}{money(estTotal * partySize)}</span>
+                </div>
+                <div className="flex items-center justify-between border-t border-gold/15 pt-2">
+                  <span className="text-sm text-mist">
+                    Deposit to confirm
+                    <span className="block text-xs text-mist-dim">{money(site.depositAmount)} per guest · applied to your treatment</span>
+                  </span>
+                  <span className="font-display text-lg text-cream">{money(depositTotal)}</span>
+                </div>
               </div>
 
               <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl border border-white/10 p-4 text-sm text-mist">
                 <input type="checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); setErrors((x) => ({ ...x, consent: '' })); }}
                   className="mt-0.5 h-5 w-5 shrink-0 accent-pink" />
                 <span>
-                  I understand my appointment is <strong className="text-cream">not confirmed</strong> until I complete the
-                  medical consent form and place a refundable {money(site.depositAmount)} deposit (applied to my treatment).
+                  I understand my appointment is <strong className="text-cream">not confirmed</strong> until the
+                  medical consent form is complete and a refundable {money(depositTotal)} deposit is placed (applied to
+                  treatment){partySize > 1 ? `, with ${money(site.depositAmount)} and a separate consent form per guest` : ''}.
                   I agree to the{' '}
                   <a href="/terms" target="_blank" className="text-teal-bright underline">Terms</a>,{' '}
+                  <a href="/cancellation" target="_blank" className="text-teal-bright underline">Cancellation Policy</a>,{' '}
                   <a href="/privacy" target="_blank" className="text-teal-bright underline">Privacy Policy</a>, and{' '}
                   <a href="/hipaa" target="_blank" className="text-teal-bright underline">HIPAA Notice</a>.
                 </span>
@@ -476,8 +545,8 @@ export default function BookingWizard() {
             </section>
           )}
 
-          {/* Nav buttons */}
-          <div className="mt-8 flex items-center justify-between gap-3 border-t border-white/8 pt-6">
+          {/* Nav buttons (desktop; mobile uses the sticky bar below) */}
+          <div className="mt-8 hidden items-center justify-between gap-3 border-t border-white/8 pt-6 lg:flex">
             {step > 0 ? (
               <button type="button" onClick={back} className="btn btn-ghost !px-5">
                 <Icon name="arrow-left" size={18} /> Back
@@ -510,18 +579,54 @@ export default function BookingWizard() {
                   <span className="text-gold-bright">{money(a.price)}</span>
                 </div>
               ))}
+              {partySize > 1 && (
+                <div className="flex items-center justify-between">
+                  <span className="text-mist">Guests</span>
+                  <span className="text-cream">× {partySize}</span>
+                </div>
+              )}
               <div className="flex items-center justify-between border-t border-white/8 pt-3">
                 <span className="font-semibold text-cream">Est. total</span>
-                <span className="font-display text-xl text-gold-bright">{service ? `${service.priceFrom || chosenAddOns.length ? '~' : ''}${money(estTotal)}` : '—'}</span>
+                <span className="font-display text-xl text-gold-bright">{service ? `${service.priceFrom || chosenAddOns.length || partySize > 1 ? '~' : ''}${money(estTotal * partySize)}` : '—'}</span>
+              </div>
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-mist-dim">Deposit to confirm</span>
+                <span className="text-cream">{money(depositTotal)}</span>
               </div>
             </div>
             <div className="mt-5 rounded-xl bg-navy/60 p-3 text-xs leading-relaxed text-mist-dim">
               <Icon name="shield" size={14} className="mb-1 inline text-teal" /> A refundable {money(site.depositAmount)} deposit
-              confirms your booking and applies to your treatment. RN administered · medical-director supervised.
+              per guest confirms your booking and applies to your treatment. RN administered · medical-director supervised.
             </div>
           </div>
         </aside>
       </div>
+
+      {/* Mobile sticky action bar — appears once a therapy is chosen */}
+      {(step > 0 || !!serviceId) && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-navy/95 px-4 py-3 backdrop-blur-md lg:hidden">
+          <div className="mx-auto flex max-w-5xl items-center gap-3">
+            {step > 0 && (
+              <button type="button" onClick={back} className="btn btn-ghost !px-4 shrink-0" aria-label="Back">
+                <Icon name="arrow-left" size={18} />
+              </button>
+            )}
+            <div className="min-w-0 flex-1 text-xs text-mist-dim">
+              <span className="block truncate">{service ? service.name : 'Select a therapy'}</span>
+              <span className="text-cream">{service ? `${service.priceFrom || chosenAddOns.length || partySize > 1 ? '~' : ''}${money(estTotal * partySize)}` : ''}</span>
+            </div>
+            {step < STEPS.length - 1 ? (
+              <button type="button" onClick={next} className="btn btn-primary !px-6 shrink-0">
+                Continue <Icon name="arrow-right" size={18} />
+              </button>
+            ) : (
+              <button type="button" onClick={submit} disabled={status === 'sending'} className="btn btn-primary !px-6 shrink-0 disabled:opacity-70">
+                {status === 'sending' ? (<><Spinner /> Sending…</>) : (<>Send Request <Icon name="arrow-right" size={16} /></>)}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -41,6 +41,34 @@ const { title, description, path, noindex, bare = false } = Astro.props;
     </main>
     {!bare && <Footer />}
 
+    {!bare && (
+      <button
+        id="scroll-top"
+        class="fixed bottom-5 right-5 z-40 grid h-12 w-12 translate-y-4 place-items-center rounded-full border border-white/10 bg-navy-800/90 text-cream opacity-0 shadow-lg shadow-black/40 backdrop-blur-md transition-all duration-300 hover:border-teal/50 hover:text-teal-bright"
+        aria-label="Scroll back to top"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+      </button>
+    )}
+
+    <script>
+      // Scroll-to-top button: appears after scrolling down a bit.
+      const topBtn = document.getElementById('scroll-top');
+      if (topBtn) {
+        const toggleTopBtn = () => {
+          const show = window.scrollY > 600;
+          topBtn.classList.toggle('opacity-0', !show);
+          topBtn.classList.toggle('translate-y-4', !show);
+          topBtn.classList.toggle('pointer-events-none', !show);
+        };
+        toggleTopBtn();
+        window.addEventListener('scroll', toggleTopBtn, { passive: true });
+        topBtn.addEventListener('click', () =>
+          window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+        );
+      }
+    </script>
+
     <script>
       // Scroll-reveal via IntersectionObserver (respects reduced-motion CSS).
       const els = document.querySelectorAll('[data-reveal]');

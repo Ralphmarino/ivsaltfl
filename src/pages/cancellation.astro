@@ -1,0 +1,55 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
+---
+<Legal
+  title="Cancellation, No-Show & Travel Policy"
+  path="/cancellation"
+  description="IV Salt Rejuvenation appointment cancellation, no-show, appointment readiness, and travel fee policy for the Treasure Coast."
+>
+  <p>
+    We hold each appointment time exclusively for you and travel to your location, so the following policy
+    helps us serve everyone fairly. By booking, you agree to these terms.
+  </p>
+
+  <h2>Cancellation Policy</h2>
+  <ul>
+    <li>Appointments canceled with at least <strong>24 hours' notice</strong> may be rescheduled without penalty.</li>
+    <li>Appointments canceled with <strong>less than 24 hours' notice</strong> may be subject to a ${site.depositAmount} cancellation fee.</li>
+  </ul>
+
+  <h2>Same-Day Cancellations</h2>
+  <p>Appointments canceled on the day of service may be charged up to <strong>50% of the scheduled service cost</strong>.</p>
+
+  <h2>No-Show Policy</h2>
+  <p>
+    No-show appointments may be charged <strong>100% of the reserved service fee</strong>. Future appointments
+    may require prepayment.
+  </p>
+
+  <h2>Appointment Readiness</h2>
+  <p>
+    Clients are responsible for being present at the agreed-upon appointment location at the scheduled time.
+    If the client is unavailable upon arrival, IV Salt Rejuvenation LLC will make reasonable efforts to
+    contact the client. If the client cannot be reached within <strong>15 minutes</strong> of arrival, the
+    appointment may be considered a no-show and applicable fees may apply.
+  </p>
+
+  <h2>Travel Fee Policy</h2>
+  <ul>
+    <li>No travel fee applies within <strong>Port St. Lucie, Stuart, Palm City, and Jensen Beach</strong>.</li>
+    <li>Extended service areas may incur an additional travel fee, disclosed prior to appointment confirmation.</li>
+    <li>Once the provider has departed for the appointment location, any applicable travel fee is non-refundable.</li>
+  </ul>
+
+  <h2>Deposits</h2>
+  <p>
+    A refundable ${site.depositAmount} deposit is required to confirm each appointment and is applied toward
+    your treatment cost. For multiple guests, a separate deposit applies per person.
+  </p>
+
+  <p class="callout">
+    You will review and acknowledge this policy as part of your consent form before treatment. Questions? Contact
+    us any time at <a href={site.phoneHref}>{site.phone}</a> or <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+</Legal>
