@@ -1,0 +1,69 @@
+---
+import { site } from '../../data/site';
+import { promises } from '../../data/services';
+import Icon from '../Icon.astro';
+---
+
+<section id="about" class="relative scroll-mt-24 py-20 md:py-28">
+  <div class="container-x">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+      <!-- Photo -->
+      <div class="relative mx-auto w-full max-w-md" data-reveal>
+        <div class="absolute -inset-4 rounded-[2.2rem] bg-gradient-to-br from-teal/15 via-pink/10 to-gold/10 blur-2xl"></div>
+        <div class="card relative aspect-[4/5] overflow-hidden rounded-[2rem]">
+          <img
+            src="/assets/sara.jpg"
+            alt="Sara, founder and registered nurse at IV Salt Rejuvenation"
+            class="h-full w-full object-cover"
+            onerror="this.style.display='none';this.parentElement.classList.add('about-fallback')"
+            loading="lazy"
+          />
+          <div class="about-fallback-art absolute inset-0 hidden place-items-center bg-gradient-to-br from-navy-800 to-ink">
+            <div class="text-center">
+              <div class="mx-auto grid h-24 w-24 place-items-center rounded-full bg-gradient-to-br from-pink to-gold text-white font-display text-4xl">S</div>
+              <p class="mt-5 font-display text-xl text-cream">Meet Sara</p>
+              <p class="mt-1 text-xs uppercase tracking-[0.2em] text-mist-dim">Add photo → /assets/sara.jpg</p>
+            </div>
+          </div>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 to-transparent p-6 pt-16">
+            <p class="font-display text-2xl text-cream">Sara</p>
+            <p class="text-sm text-teal-bright">Founder &amp; Registered Nurse</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copy -->
+      <div data-reveal data-reveal-delay="1">
+        <p class="eyebrow">About IV Salt Rejuvenation</p>
+        <h2 class="mt-4 font-display text-4xl md:text-5xl">
+          Concierge wellness, <span class="text-gradient">the personal touch.</span>
+        </h2>
+        <p class="mt-5 leading-relaxed text-mist">
+          IV Salt Rejuvenation was founded by Sara, a licensed registered nurse who believes feeling
+          your best shouldn't mean a trip to a clinic. She brings safe, professional IV therapy
+          directly to you across the Treasure Coast — with the care, comfort, and attention you deserve.
+        </p>
+        <p class="mt-4 leading-relaxed text-mist">
+          Every treatment is administered by a registered nurse under the supervision of a medical
+          director, so you can relax knowing you're in expert hands.
+        </p>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-3">
+          {promises.map((p) => (
+            <div class="rounded-2xl border border-white/8 bg-navy/40 p-4">
+              <Icon name={p.icon} size={22} class="text-teal-bright" />
+              <h3 class="mt-3 font-display text-base text-cream">{p.title}</h3>
+              <p class="mt-1 text-xs leading-relaxed text-mist">{p.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <p class="mt-8 text-script text-3xl">{site.motto}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-fallback .about-fallback-art { display: grid; }
+</style>

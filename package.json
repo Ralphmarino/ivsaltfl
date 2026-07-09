@@ -1,0 +1,33 @@
+{
+  "name": "ivsaltfl",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "IV Salt Rejuvenation — mobile IV hydration & wellness. Marketing site + custom booking flow.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^6.0.1",
+    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/fraunces": "^5.2.9",
+    "@fontsource-variable/manrope": "^5.2.8",
+    "@fontsource/pinyon-script": "^5.2.8",
+    "@tailwindcss/vite": "^4.3.2",
+    "astro": "^7.0.7",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.3.2"
+  },
+  "devDependencies": {
+    "@netlify/functions": "^5.3.0",
+    "@types/node": "^22.20.1",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "playwright-core": "^1.61.1",
+    "typescript": "^5.9.3"
+  }
+}

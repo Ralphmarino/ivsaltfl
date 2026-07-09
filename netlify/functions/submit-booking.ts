@@ -1,0 +1,86 @@
+/**
+ * POST /api/book  →  /.netlify/functions/submit-booking
+ *
+ * Orchestrates a booking request:
+ *   1. Validate the payload
+ *   2. Email the business owner (ivsaltfl@gmail.com)
+ *   3. Email the customer their confirmation + consent-form/deposit CTA
+ *   4. Create a Google Calendar event (marked unconfirmed)
+ *   5. (optional) Text Sara + the customer via Twilio when configured
+ *
+ * Every channel fails soft: a missing integration is "skipped", not fatal, so
+ * bookings keep flowing while you finish setup. The full request is always
+ * logged to the function logs as a last-resort record.
+ */
+import type { Context } from '@netlify/functions';
+import { validateBooking, money, formatAddress } from './lib/types';
+import { ownerEmail, customerEmail } from './lib/emails';
+import { sendEmail, sendSms } from './lib/notify';
+import { createCalendarEvent } from './lib/google-calendar';
+
+const SITE_URL = process.env.SITE_URL || 'https://ivsaltfl.com';
+const OWNER_EMAIL = process.env.OWNER_EMAIL || 'ivsaltfl@gmail.com';
+const CONSENT_URL = process.env.CONSENT_FORM_URL || 'https://form.jotform.com/261876510047155';
+// Sara's mobile for SMS alerts (E.164, e.g. +17722227108). Optional.
+const SARA_PHONE = process.env.SARA_PHONE || '';
+
+const json = (status: number, body: unknown) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
+
+export default async (req: Request, _context: Context): Promise<Response> => {
+  if (req.method !== 'POST') return json(405, { ok: false, error: 'Method not allowed' });
+
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return json(400, { ok: false, error: 'Invalid JSON' });
+  }
+
+  const { ok, errors, data } = validateBooking(body);
+  if (!ok || !data) return json(422, { ok: false, error: 'Validation failed', details: errors });
+
+  // Always log the booking so it is never lost, even mid-setup.
+  console.log('📅 BOOKING REQUEST', JSON.stringify({
+    name: data.customer.fullName,
+    phone: data.customer.phone,
+    email: data.customer.email,
+    address: formatAddress(data.customer),
+    service: data.service?.name,
+    addOns: data.addOns.map((a) => a.name),
+    total: data.estimatedTotal,
+    preferred: data.preferred,
+  }));
+
+  const owner = ownerEmail(data, SITE_URL);
+  const customer = customerEmail(data, SITE_URL, CONSENT_URL);
+
+  const smsOwnerBody =
+    `New IV booking request (UNCONFIRMED): ${data.customer.fullName}, ${data.service?.name} ` +
+    `${money(data.estimatedTotal)}, ${data.preferred.date} ${data.preferred.time}. ` +
+    `${data.customer.phone}. ${formatAddress(data.customer)}`;
+  const smsCustomerBody =
+    `IV Salt Rejuvenation: we got your booking request! To confirm, please complete the consent form ` +
+    `and $${data.deposit} deposit: ${CONSENT_URL} — Questions? Call/text 772-222-7108.`;
+
+  // Fire all channels in parallel; none can block another.
+  const [ownerMail, custMail, calendar, ownerSms, custSms] = await Promise.all([
+    sendEmail({ to: OWNER_EMAIL, subject: owner.subject, html: owner.html, text: owner.text, replyTo: data.customer.email }),
+    sendEmail({ to: data.customer.email, subject: customer.subject, html: customer.html, text: customer.text, replyTo: OWNER_EMAIL }),
+    createCalendarEvent(data),
+    sendSms({ to: SARA_PHONE, body: smsOwnerBody }),
+    sendSms({ to: data.customer.phone, body: smsCustomerBody }),
+  ]);
+
+  const channels = { ownerMail, custMail, calendar, ownerSms, custSms };
+  // Log any hard failures (skipped = intentionally-unconfigured, not an error).
+  for (const [name, r] of Object.entries(channels)) {
+    if (!r.ok && !r.skipped) console.error(`Channel "${name}" failed:`, r.error);
+  }
+
+  // The request itself is valid and recorded → success for the customer.
+  return json(200, { ok: true, channels });
+};

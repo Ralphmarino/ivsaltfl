@@ -1,0 +1,30 @@
+---
+import { whyIvTherapy } from '../../data/services';
+import Icon from '../Icon.astro';
+---
+
+<section id="why" class="relative scroll-mt-24 overflow-hidden py-20 md:py-28">
+  <div class="pointer-events-none absolute inset-x-0 top-1/2 -z-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+  <div class="container-x relative z-10">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <p class="eyebrow eyebrow-center justify-center">Why IV Therapy</p>
+      <h2 class="mt-4 font-display text-4xl md:text-5xl">The <span class="text-gradient">smarter</span> way to feel better</h2>
+      <p class="mt-4 text-mist">
+        Unlike drinks or supplements, IV therapy delivers fluids, vitamins, and nutrients directly
+        into your bloodstream for maximum, immediate benefit.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {whyIvTherapy.map((w, i) => (
+        <div class="card card-hover flex flex-col items-center p-7 text-center" data-reveal data-reveal-delay={(i + 1).toString()}>
+          <span class="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-teal/20 via-pink/10 to-transparent text-teal-bright">
+            <Icon name={w.icon} size={30} />
+          </span>
+          <h3 class="mt-5 font-display text-xl text-cream">{w.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-mist">{w.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

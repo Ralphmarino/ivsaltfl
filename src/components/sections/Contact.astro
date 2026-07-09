@@ -1,0 +1,52 @@
+---
+import { site } from '../../data/site';
+import Icon from '../Icon.astro';
+---
+
+<section id="contact" class="relative scroll-mt-24 py-20 md:py-24">
+  <div class="container-x">
+    <!-- CTA banner -->
+    <div class="card relative overflow-hidden rounded-[2rem] p-8 md:p-14" data-reveal>
+      <div class="aurora"></div>
+      <div class="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-pink/20 blur-[100px]"></div>
+      <div class="relative z-10 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+        <div>
+          <p class="text-script text-4xl md:text-5xl">Book Your Wellness!</p>
+          <h2 class="mt-3 font-display text-3xl md:text-4xl text-cream">
+            Ready to feel refreshed &amp; rejuvenated?
+          </h2>
+          <p class="mt-4 max-w-lg text-mist">
+            Reserve your mobile IV session in minutes. Questions first? Call or text us —
+            we're happy to help you choose the right therapy.
+          </p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="/book" class="btn btn-primary text-base">Book Online <Icon name="arrow-right" size={19} /></a>
+            <a href={site.phoneHref} class="btn btn-ghost text-base"><Icon name="phone" size={18} /> {site.phone}</a>
+          </div>
+        </div>
+
+        <!-- Contact list -->
+        <div class="grid gap-3">
+          <a href={site.phoneHref} class="card card-hover flex items-center gap-4 p-4">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-teal/15 text-teal-bright"><Icon name="phone" size={20} /></span>
+            <div><p class="text-xs uppercase tracking-wider text-mist-dim">Call or Text</p><p class="font-semibold text-cream">{site.phone}</p></div>
+          </a>
+          <a href={`mailto:${site.email}`} class="card card-hover flex items-center gap-4 p-4">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-pink/15 text-pink-bright"><Icon name="mail" size={20} /></span>
+            <div><p class="text-xs uppercase tracking-wider text-mist-dim">Email</p><p class="font-semibold text-cream">{site.email}</p></div>
+          </a>
+          <a href={site.facebook} target="_blank" rel="noopener noreferrer" class="card card-hover flex items-center gap-4 p-4">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-gold/15 text-gold-bright"><Icon name="facebook" size={20} /></span>
+            <div><p class="text-xs uppercase tracking-wider text-mist-dim">Follow</p><p class="font-semibold text-cream">Facebook</p></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service area strip -->
+    <div class="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-white/8 bg-navy/40 px-6 py-5 text-center sm:flex-row sm:justify-center sm:text-left" data-reveal>
+      <Icon name="map-pin" size={22} class="text-pink-bright" />
+      <p class="font-medium text-cream">{site.serviceArea}</p>
+    </div>
+  </div>
+</section>

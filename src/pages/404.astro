@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+<Base title="Page Not Found" noindex path="/404">
+  <section class="relative grid min-h-[70vh] place-items-center overflow-hidden pt-32 pb-20">
+    <div class="aurora animate-drift"></div>
+    <div class="container-x relative z-10 text-center">
+      <p class="font-display text-8xl text-gradient md:text-9xl">404</p>
+      <h1 class="mt-4 font-display text-3xl text-cream md:text-4xl">This page took a wellness day.</h1>
+      <p class="mx-auto mt-3 max-w-md text-mist">
+        The page you're looking for isn't here — but your next infusion is just a tap away.
+      </p>
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/" class="btn btn-ghost">Back to Home</a>
+        <a href="/book" class="btn btn-primary">Book Your Wellness <Icon name="arrow-right" size={18} /></a>
+      </div>
+    </div>
+  </section>
+</Base>

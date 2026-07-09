@@ -1,0 +1,44 @@
+---
+import { addOns } from '../../data/services';
+import Icon from '../Icon.astro';
+---
+
+<section id="add-ons" class="relative scroll-mt-24 py-20 md:py-24">
+  <div class="container-x">
+    <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+      <div data-reveal>
+        <p class="eyebrow">Boost Your Infusion</p>
+        <h2 class="mt-4 font-display text-4xl md:text-5xl">Add-Ons &amp; <span class="text-gradient">extra boosts</span></h2>
+        <p class="mt-4 max-w-md text-mist">
+          Personalize any IV therapy. Add a vitamin shot, extra antioxidants, or symptom relief —
+          you'll be offered these during booking, no pressure.
+        </p>
+        <a href="/book" class="btn btn-teal mt-7">Start Booking <Icon name="arrow-right" size={18} /></a>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2" role="list">
+        {addOns.map((a, i) => (
+          <div class="card card-hover flex items-start gap-4 p-5" role="listitem" data-reveal data-reveal-delay={((i % 2) + 1).toString()}>
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-pink/20 to-gold/10 text-pink-bright">
+              <Icon name={a.icon} size={22} />
+            </span>
+            <div class="min-w-0">
+              <div class="flex items-baseline justify-between gap-3">
+                <h3 class="font-display text-lg text-cream">{a.name}</h3>
+                <span class="shrink-0 font-display text-lg text-gold-bright">${a.price}</span>
+              </div>
+              <p class="mt-1 text-sm text-mist">{a.description}</p>
+              {a.options && (
+                <ul class="mt-2 flex flex-wrap gap-1.5">
+                  {a.options.map((o) => (
+                    <li class="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-mist">{o}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,105 @@
+---
+import { site } from '../../data/site';
+import Icon from '../Icon.astro';
+
+const trust = [
+  { icon: 'shield', label: 'RN Administered' },
+  { icon: 'heart', label: 'Medical Director Supervised' },
+  { icon: 'map-pin', label: 'We Come To You' },
+];
+---
+
+<section class="relative overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28">
+  <!-- Ambient backdrop -->
+  <div class="aurora animate-drift"></div>
+  <div class="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-teal/10 blur-[120px]"></div>
+  <div class="pointer-events-none absolute -right-32 top-40 h-96 w-96 rounded-full bg-pink/10 blur-[120px]"></div>
+
+  <div class="container-x relative z-10">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+      <!-- Copy -->
+      <div>
+        <p class="eyebrow" data-reveal>{site.subTagline}</p>
+
+        <h1 class="mt-5 font-display text-[2.7rem] leading-[1.05] sm:text-6xl lg:text-[4.2rem]" data-reveal data-reveal-delay="1">
+          Feel Your Best,
+          <span class="block">Right at <span class="grad-underline">Your Door.</span></span>
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-mist" data-reveal data-reveal-delay="2">
+          Premium mobile IV hydration &amp; wellness on the Treasure Coast. A licensed
+          registered nurse comes to you — home, office, or hotel — to rehydrate,
+          recharge, and restore. <span class="text-cream font-semibold">{site.tagline}</span>
+        </p>
+
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center" data-reveal data-reveal-delay="3">
+          <a href="/book" class="btn btn-primary text-base">
+            Book Your Wellness <Icon name="arrow-right" size={19} />
+          </a>
+          <a href="/#services" class="btn btn-ghost text-base">View the Menu</a>
+        </div>
+
+        <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-3" data-reveal data-reveal-delay="4">
+          {trust.map((t) => (
+            <li class="flex items-center gap-2 text-sm font-medium text-mist">
+              <span class="grid h-8 w-8 place-items-center rounded-full border border-teal/30 bg-teal/5 text-teal-bright">
+                <Icon name={t.icon} size={16} />
+              </span>
+              {t.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Visual -->
+      <div class="relative mx-auto w-full max-w-md lg:max-w-none" data-reveal data-reveal-delay="2">
+        <div class="relative aspect-[4/5] w-full">
+          <!-- Glow ring -->
+          <div class="absolute inset-6 rounded-[2rem] bg-gradient-to-br from-teal/20 via-pink/15 to-gold/10 blur-2xl animate-pulse-glow"></div>
+
+          <!-- Image frame: replace /assets/hero.jpg with a real photo of Sara / an IV session -->
+          <div class="card relative h-full overflow-hidden rounded-[2rem] border-white/10">
+            <img
+              src="/assets/hero.jpg"
+              alt="Registered nurse administering a mobile IV therapy session"
+              class="h-full w-full object-cover"
+              onerror="this.style.display='none';this.parentElement.classList.add('hero-fallback')"
+              loading="eager"
+            />
+            <!-- Fallback content shown until a real photo is added -->
+            <div class="hero-fallback-art absolute inset-0 hidden place-items-center bg-gradient-to-br from-navy-800 to-ink">
+              <div class="text-center">
+                <div class="mx-auto grid h-28 w-28 place-items-center rounded-full bg-gradient-to-br from-teal to-pink animate-float">
+                  <Icon name="drop" size={54} class="text-white" />
+                </div>
+                <p class="mt-6 px-8 font-display text-2xl text-cream">Your wellness,<br />delivered.</p>
+                <p class="mt-2 text-xs uppercase tracking-[0.2em] text-mist-dim">Add a photo → /assets/hero.jpg</p>
+              </div>
+            </div>
+            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent"></div>
+          </div>
+
+          <!-- Floating price/stat cards -->
+          <div class="card absolute -bottom-5 -left-4 flex items-center gap-3 rounded-2xl px-4 py-3 animate-float" style="animation-delay:-3s">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-gold/15 text-gold-bright"><Icon name="bolt" size={22} /></span>
+            <div>
+              <p class="text-sm font-bold text-cream">100% Absorption</p>
+              <p class="text-xs text-mist-dim">Straight to your bloodstream</p>
+            </div>
+          </div>
+          <div class="card absolute -right-3 top-8 flex items-center gap-3 rounded-2xl px-4 py-3 animate-float-slow">
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-pink/15 text-pink-bright"><Icon name="heart" size={22} /></span>
+            <div>
+              <p class="text-sm font-bold text-cream">RN Administered</p>
+              <p class="text-xs text-mist-dim">Safe &amp; professional</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-fallback .hero-fallback-art { display: grid; }
+</style>

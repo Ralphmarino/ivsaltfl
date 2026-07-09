@@ -1,0 +1,60 @@
+---
+import { services } from '../../data/services';
+import Icon from '../Icon.astro';
+---
+
+<section id="services" class="relative scroll-mt-24 py-20 md:py-28">
+  <div class="container-x">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <p class="eyebrow eyebrow-center justify-center">IV Therapy Menu</p>
+      <h2 class="mt-4 font-display text-4xl md:text-5xl">
+        Infusions crafted to <span class="text-gradient">restore you</span>
+      </h2>
+      <p class="mt-4 text-mist">
+        Choose the blend that fits your goals. Every therapy is administered by a licensed RN and
+        customizable with add-ons. Prices reflect the full treatment.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((s, i) => (
+        <article
+          class={`card card-hover group relative flex flex-col overflow-hidden p-7 ${s.featured ? 'ring-brand' : ''}`}
+          data-reveal
+          data-reveal-delay={((i % 3) + 1).toString()}
+        >
+          {s.featured && (
+            <span class="absolute right-5 top-5 rounded-full bg-gradient-to-r from-pink to-pink-deep px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-white">
+              Signature
+            </span>
+          )}
+          <div class="flex items-start justify-between gap-4">
+            <span class="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-teal/20 to-pink/15 text-teal-bright transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+              <Icon name={s.icon} size={28} />
+            </span>
+          </div>
+
+          <h3 class="mt-5 font-display text-2xl text-cream">{s.name}</h3>
+          <p class="mt-2.5 flex-1 text-sm leading-relaxed text-mist">{s.description}</p>
+
+          <div class="mt-6 flex items-end justify-between border-t border-white/8 pt-5">
+            <div>
+              {s.priceFrom && <span class="block text-[0.65rem] font-semibold uppercase tracking-wider text-mist-dim">Starting at</span>}
+              <span class="font-display text-3xl text-gold-bright">${s.price}</span>
+            </div>
+            <span class="flex items-center gap-1.5 text-xs font-medium text-mist-dim">
+              <Icon name="clock" size={15} /> {s.duration}
+            </span>
+          </div>
+
+          <a
+            href={`/book?service=${s.id}`}
+            class="mt-5 inline-flex items-center justify-center gap-2 rounded-full border border-white/12 py-2.5 text-sm font-semibold text-cream transition-all duration-300 group-hover:border-teal/50 group-hover:bg-teal/10 group-hover:text-teal-bright"
+          >
+            Select &amp; Book <Icon name="arrow-right" size={16} />
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

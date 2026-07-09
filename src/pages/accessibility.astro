@@ -1,0 +1,44 @@
+---
+import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
+---
+<Legal title="Accessibility Statement" path="/accessibility">
+  <p>
+    IV Salt Rejuvenation is committed to ensuring digital accessibility for people with disabilities. We are
+    continually improving the user experience for everyone and applying the relevant accessibility standards.
+  </p>
+
+  <h2>Our Commitment</h2>
+  <p>
+    We aim to conform to the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA and to make our website
+    usable for the widest possible audience, in the spirit of the Americans with Disabilities Act (ADA).
+  </p>
+
+  <h2>Measures We Take</h2>
+  <ul>
+    <li>Semantic, structured HTML with clear headings and landmarks.</li>
+    <li>Keyboard-navigable menus, forms, and our booking flow, with visible focus indicators.</li>
+    <li>A "skip to content" link for screen reader and keyboard users.</li>
+    <li>Descriptive text alternatives for meaningful images.</li>
+    <li>Color combinations chosen for readable contrast.</li>
+    <li>Respect for the "reduce motion" setting — animations are minimized when you prefer reduced motion.</li>
+    <li>Responsive layouts that work across phones, tablets, and desktops.</li>
+  </ul>
+
+  <h2>Ongoing Effort</h2>
+  <p>
+    Accessibility is an ongoing effort. We regularly review our website and welcome your feedback to help us
+    improve.
+  </p>
+
+  <h2>Need Help or Found a Barrier?</h2>
+  <p>
+    If you encounter any difficulty using our website, or if you need this information in an alternative format,
+    please contact us — we're happy to help and to assist you with booking directly:
+  </p>
+  <ul>
+    <li>Phone or text: <a href={site.phoneHref}>{site.phone}</a></li>
+    <li>Email: <a href={`mailto:${site.email}`}>{site.email}</a></li>
+  </ul>
+  <p>We aim to respond to accessibility feedback within a reasonable timeframe.</p>
+</Legal>

@@ -1,0 +1,66 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  path = '',
+  image = '/og-image.jpg',
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — Mobile IV Therapy | ${site.serviceAreaShort}`;
+const canonical = new URL(path, Astro.site ?? site.url).href;
+const ogImage = new URL(image, Astro.site ?? site.url).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['MedicalBusiness', 'LocalBusiness'],
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  telephone: `+1-${site.phone}`,
+  email: site.email,
+  image: ogImage,
+  priceRange: '$$',
+  areaServed: [
+    { '@type': 'City', name: 'Port St. Lucie' },
+    { '@type': 'City', name: 'Stuart' },
+    { '@type': 'AdministrativeArea', name: 'Treasure Coast' },
+    { '@type': 'AdministrativeArea', name: 'Martin County' },
+  ],
+  sameAs: [site.facebook],
+  medicalSpecialty: 'Wellness',
+  slogan: site.tagline,
+};
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

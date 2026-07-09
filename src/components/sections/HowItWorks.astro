@@ -1,0 +1,55 @@
+---
+import { site } from '../../data/site';
+import Icon from '../Icon.astro';
+
+const steps = [
+  {
+    icon: 'calendar',
+    title: 'Book Online',
+    text: 'Pick your IV therapy, add any boosts, and choose a time that works for you — in just a couple of minutes.',
+  },
+  {
+    icon: 'check',
+    title: 'Confirm Your Spot',
+    text: `We'll send a confirmation with a quick medical consent form and a $${site.depositAmount} deposit to lock in your appointment. The deposit applies to your treatment.`,
+  },
+  {
+    icon: 'map-pin',
+    title: 'We Come To You',
+    text: 'A licensed registered nurse arrives at your home, office, or hotel with everything needed for a relaxing session.',
+  },
+  {
+    icon: 'heart',
+    title: 'Rehydrate & Restore',
+    text: 'Sit back and recharge. Most infusions take about 45–60 minutes. Feel refreshed and rejuvenated.',
+  },
+];
+---
+
+<section id="how-it-works" class="relative scroll-mt-24 py-20 md:py-28">
+  <div class="container-x">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <p class="eyebrow eyebrow-center justify-center">How It Works</p>
+      <h2 class="mt-4 font-display text-4xl md:text-5xl">Wellness in <span class="text-gradient">four easy steps</span></h2>
+    </div>
+
+    <ol class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      {steps.map((s, i) => (
+        <li class="relative" data-reveal data-reveal-delay={(i + 1).toString()}>
+          <!-- connector -->
+          {i < steps.length - 1 && (
+            <span class="pointer-events-none absolute left-[3.25rem] top-7 hidden h-px w-[calc(100%-2rem)] bg-gradient-to-r from-teal/40 to-transparent lg:block"></span>
+          )}
+          <div class="flex items-center gap-4 lg:flex-col lg:items-start">
+            <span class="relative grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-teal to-pink text-white shadow-lg shadow-pink/20">
+              <Icon name={s.icon} size={26} />
+              <span class="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full border border-white/20 bg-navy-800 font-display text-sm text-gold-bright">{i + 1}</span>
+            </span>
+            <h3 class="font-display text-xl text-cream lg:mt-5">{s.title}</h3>
+          </div>
+          <p class="mt-3 text-sm leading-relaxed text-mist lg:pr-4">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

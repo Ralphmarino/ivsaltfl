@@ -1,0 +1,107 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+
+const explore = [
+  { label: 'Services', href: '/#services' },
+  { label: 'Add-Ons', href: '/#add-ons' },
+  { label: 'Why IV Therapy', href: '/#why' },
+  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'Book Now', href: '/book' },
+];
+const legal = [
+  { label: 'HIPAA Notice', href: '/hipaa' },
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Cookie Policy', href: '/cookies' },
+  { label: 'Terms & Conditions', href: '/terms' },
+  { label: 'Accessibility', href: '/accessibility' },
+];
+---
+
+<footer class="relative mt-24 border-t border-white/8 bg-ink">
+  <div class="aurora opacity-40"></div>
+  <div class="container-x relative z-10 py-16">
+    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
+      <!-- Brand -->
+      <div class="lg:col-span-1">
+        <a href="/" class="flex items-center gap-3" aria-label={`${site.name} — home`}>
+          <img src="/assets/logo.svg" alt={site.name} width="170" height="54" class="h-12 w-auto"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'" />
+          <span class="hidden items-baseline gap-1 font-display text-2xl" aria-hidden="true">
+            <span class="font-semibold text-teal">IV</span><span class="text-script text-3xl leading-none">Salt</span>
+          </span>
+        </a>
+        <p class="mt-4 max-w-xs text-sm leading-relaxed text-mist">
+          {site.subTagline}. {site.tagline}
+        </p>
+        <p class="mt-4 text-script text-2xl">{site.motto}</p>
+        <div class="mt-5 flex gap-3">
+          <a href={site.facebook} target="_blank" rel="noopener noreferrer"
+            class="grid h-11 w-11 place-items-center rounded-xl border border-white/10 text-mist transition-colors hover:border-teal/50 hover:text-teal-bright"
+            aria-label="Follow us on Facebook">
+            <Icon name="facebook" size={20} />
+          </a>
+          <a href={site.smsHref}
+            class="grid h-11 w-11 place-items-center rounded-xl border border-white/10 text-mist transition-colors hover:border-pink/50 hover:text-pink-bright"
+            aria-label="Text us">
+            <Icon name="sms" size={20} />
+          </a>
+        </div>
+      </div>
+
+      <!-- Explore -->
+      <nav aria-label="Footer — explore">
+        <h2 class="font-display text-lg text-cream">Explore</h2>
+        <ul class="mt-4 space-y-2.5">
+          {explore.map((l) => (
+            <li><a href={l.href} class="text-sm text-mist transition-colors hover:text-teal-bright">{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Legal -->
+      <nav aria-label="Footer — legal">
+        <h2 class="font-display text-lg text-cream">Legal</h2>
+        <ul class="mt-4 space-y-2.5">
+          {legal.map((l) => (
+            <li><a href={l.href} class="text-sm text-mist transition-colors hover:text-teal-bright">{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Contact -->
+      <div>
+        <h2 class="font-display text-lg text-cream">Get In Touch</h2>
+        <ul class="mt-4 space-y-3.5 text-sm">
+          <li>
+            <a href={site.phoneHref} class="flex items-center gap-3 text-mist transition-colors hover:text-teal-bright">
+              <Icon name="phone" size={18} class="shrink-0 text-teal" /> {site.phone}
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${site.email}`} class="flex items-center gap-3 text-mist transition-colors hover:text-teal-bright">
+              <Icon name="mail" size={18} class="shrink-0 text-teal" /> {site.email}
+            </a>
+          </li>
+          <li class="flex items-start gap-3 text-mist">
+            <Icon name="map-pin" size={18} class="mt-0.5 shrink-0 text-teal" />
+            <span>{site.serviceArea}</span>
+          </li>
+        </ul>
+        <a href="/book" class="btn btn-teal mt-6 w-full sm:w-auto">Book Your Wellness</a>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="mt-14 rounded-2xl border border-white/8 bg-navy/50 p-5 text-center">
+      <p class="mx-auto max-w-3xl text-xs leading-relaxed text-mist-dim">{site.medicalDisclaimer}</p>
+    </div>
+
+    <div class="mt-8 flex flex-col items-center justify-between gap-3 border-t border-white/8 pt-6 text-center text-xs text-mist-dim sm:flex-row sm:text-left">
+      <p>&copy; {year} {site.name}. All rights reserved.</p>
+      <p class="flex items-center gap-1.5">{site.supervisedNote} <Icon name="heart" size={13} class="text-gold" /></p>
+    </div>
+  </div>
+</footer>
