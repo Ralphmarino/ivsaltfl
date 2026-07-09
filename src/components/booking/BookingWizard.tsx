@@ -204,17 +204,40 @@ export default function BookingWizard() {
           </p>
 
           <div className="mt-8 rounded-2xl border border-gold/30 bg-gold/5 p-6 text-left">
-            <p className="flex items-center gap-2 font-display text-lg text-gold-bright">
-              <Icon name="check" size={20} /> One quick step to confirm
-            </p>
-            <p className="mt-2 text-sm leading-relaxed text-mist">
-              Your appointment isn't confirmed until you complete the medical consent form and place your
-<strong className="text-cream">{money(site.depositAmount)} deposit</strong> (applied
-              toward your treatment). You can do both in one place:
-            </p>
-            <a href={site.consentFormUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5 w-full">
-              Complete Consent Form &amp; Pay Deposit <Icon name="arrow-right" size={18} />
-            </a>
+            {partySize > 1 ? (
+              <>
+                <p className="flex items-center gap-2 font-display text-lg text-gold-bright">
+                  <Icon name="check" size={20} /> Confirm each guest ({partySize} total)
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-mist">
+                  Your appointment isn't confirmed until <strong className="text-cream">each guest</strong> completes the
+                  medical consent form and a <strong className="text-cream">{money(site.depositAmount)} deposit</strong> (applied
+                  to treatment). You booked for <strong className="text-cream">{partySize} guests</strong>, so please complete it{' '}
+                  <strong className="text-cream">{partySize} times</strong>, once per person.
+                </p>
+                <a href={site.consentFormUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5 w-full">
+                  Complete Consent Form &amp; Pay Deposit <Icon name="arrow-right" size={18} />
+                </a>
+                <p className="mt-3 text-xs leading-relaxed text-mist-dim">
+                  💡 It's the same form each time. After finishing one guest, tap the button again for the next — we also
+                  emailed you this link so you can come back to it anytime.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="flex items-center gap-2 font-display text-lg text-gold-bright">
+                  <Icon name="check" size={20} /> One quick step to confirm
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-mist">
+                  Your appointment isn't confirmed until you complete the medical consent form and place your{' '}
+                  <strong className="text-cream">{money(site.depositAmount)} deposit</strong> (applied
+                  toward your treatment). You can do both in one place:
+                </p>
+                <a href={site.consentFormUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5 w-full">
+                  Complete Consent Form &amp; Pay Deposit <Icon name="arrow-right" size={18} />
+                </a>
+              </>
+            )}
           </div>
 
           <div className="mt-8 grid gap-3 text-sm text-mist sm:grid-cols-2">

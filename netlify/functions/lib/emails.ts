@@ -113,25 +113,48 @@ Notes: ${b.notes || '—'}`;
 /** Confirmation email to the customer. */
 export function customerEmail(b: BookingPayload, siteUrl: string, consentUrl: string) {
   const first = b.customer.fullName.split(' ')[0] || 'there';
-  const inner = `
-  <p style="margin:0 0 16px;font-size:15px;color:${BRAND.text};">Hi ${escapeHtml(first)}, thanks for booking with IV Salt Rejuvenation! We've received your request for a mobile IV session.</p>
+  const party = b.partySize ?? 1;
+  const perGuest = Math.round(b.deposit / party);
+  const btn = `<a href="${consentUrl}" style="display:inline-block;background:linear-gradient(100deg,${BRAND.pink},#d61e78);color:#fff;text-decoration:none;font-weight:800;padding:13px 24px;border-radius:999px;font-size:15px;">Complete Consent Form &amp; Pay Deposit →</a>`;
+
+  const actionBox =
+    party > 1
+      ? `
+  <div style="background:#fff8ee;border:1px solid #f0d8a8;border-radius:12px;padding:18px;margin-bottom:20px;">
+    <p style="margin:0 0 6px;font-weight:800;color:#8a5a00;font-size:15px;">⚠️ Action needed for each guest (${party} total)</p>
+    <p style="margin:0 0 14px;font-size:14px;color:#6b5326;line-height:1.6;">Your appointment isn't confirmed until <strong>each guest</strong> completes the medical consent form and a <strong>$${perGuest} deposit</strong> (applied toward treatment). You booked for <strong>${party} guests</strong>, so please complete it <strong>${party} times</strong>, once per person.</p>
+    ${btn}
+    <p style="margin:14px 0 0;font-size:13px;color:#6b5326;line-height:1.6;">💡 <strong>Tip:</strong> after you finish one, come back to this email and tap the button again for the next guest. It's the <strong>same link</strong> every time, so just fill it out once per person.</p>
+  </div>`
+      : `
   <div style="background:#fff8ee;border:1px solid #f0d8a8;border-radius:12px;padding:18px;margin-bottom:20px;">
     <p style="margin:0 0 6px;font-weight:800;color:#8a5a00;font-size:15px;">⚠️ One step to confirm your appointment</p>
-    <p style="margin:0 0 14px;font-size:14px;color:#6b5326;line-height:1.6;">Your appointment isn't confirmed until you complete the medical consent form and place a <strong>$${b.deposit} deposit</strong> (applied toward your treatment).${(b.partySize ?? 1) > 1 ? ` Each guest completes their own consent form and $${Math.round(b.deposit / (b.partySize ?? 1))} deposit.` : ''} You can do both in one place:</p>
-    <a href="${consentUrl}" style="display:inline-block;background:linear-gradient(100deg,${BRAND.pink},#d61e78);color:#fff;text-decoration:none;font-weight:800;padding:13px 24px;border-radius:999px;font-size:15px;">Complete Consent Form &amp; Pay Deposit →</a>
-  </div>
+    <p style="margin:0 0 14px;font-size:14px;color:#6b5326;line-height:1.6;">Your appointment isn't confirmed until you complete the medical consent form and place a <strong>$${b.deposit} deposit</strong> (applied toward your treatment). You can do both in one place:</p>
+    ${btn}
+  </div>`;
+
+  const inner = `
+  <p style="margin:0 0 16px;font-size:15px;color:${BRAND.text};">Hi ${escapeHtml(first)}, thanks for booking with IV Salt Rejuvenation! We've received your request for a mobile IV session${party > 1 ? ` for <strong>${party} guests</strong>` : ''}.</p>
+  ${actionBox}
   <h2 style="margin:0 0 8px;font-size:15px;color:${BRAND.navy};">Your request</h2>
   <div style="background:#f7f8fb;border:1px solid ${BRAND.border};border-radius:12px;padding:16px 18px;margin-bottom:18px;">${summaryTable(b)}</div>
   <p style="font-size:14px;color:${BRAND.muted};line-height:1.7;">We'll reach out to confirm your exact time. Questions? Call or text <a href="tel:+17722227108" style="color:${BRAND.teal};text-decoration:none;">772-222-7108</a>.</p>
   <p style="font-size:16px;color:${BRAND.pink};font-style:italic;margin-top:20px;">Your wellness. Our priority.</p>`;
+
+  const actionText =
+    party > 1
+      ? `ACTION NEEDED (once per guest): You booked for ${party} guests. Each guest must complete the consent form and a $${perGuest} deposit, ${party} times total. It's the SAME link every time; just come back to this email and open it again for the next guest:
+${consentUrl}`
+      : `ACTION REQUIRED: Your appointment isn't confirmed until you complete the consent form and place a $${b.deposit} deposit (applied to your treatment):
+${consentUrl}`;
+
   const text = `Hi ${first}, thanks for booking with IV Salt Rejuvenation!
 
-ACTION REQUIRED: Your appointment isn't confirmed until you complete the consent form and place a $${b.deposit} deposit (applied to your treatment):
-${consentUrl}
+${actionText}
 
 Your request:
 Therapy: ${b.service?.name}
-Add-ons: ${b.addOns.map(addOnLine).join(', ') || 'None'}
+Add-ons: ${b.addOns.map(addOnLine).join(', ') || 'None'}${party > 1 ? `\nGuests: ${party}` : ''}
 Estimated total: ${money(b.estimatedTotal)}
 Preferred: ${b.preferred.date} ${b.preferred.time}
 
