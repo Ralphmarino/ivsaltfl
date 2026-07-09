@@ -24,7 +24,7 @@ Booking your first IV can feel like a step into the unknown. The good news is th
 
 It all starts online. You choose your IV therapy, add any boosts you would like, and pick a preferred time. We follow up to confirm the details.
 
-Before your appointment is locked in, you will complete a short medical consent form and place a refundable deposit that applies to your treatment. This helps us prepare the right infusion for you and reserve your time slot.
+Before your appointment is locked in, you will complete a short medical consent form and place a deposit that applies to your treatment. This helps us prepare the right infusion for you and reserve your time slot.
 
 ## Step 2: We come to you
 

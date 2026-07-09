@@ -11,7 +11,7 @@ export const homeFaqs: FAQ[] = [
   },
   {
     q: 'How does booking work?',
-    a: 'Choose your IV therapy, add any boosts, pick a preferred time, and share where we should come. We follow up to confirm. Your appointment is reserved once you complete a quick medical consent form and place a refundable $50 deposit, which is applied to your treatment.',
+    a: 'Choose your IV therapy, add any boosts, pick a preferred time, and share where we should come. We follow up to confirm. Your appointment is reserved once you complete a quick medical consent form and place a $50 deposit, which is applied to your treatment.',
   },
   {
     q: 'Who administers the IV?',

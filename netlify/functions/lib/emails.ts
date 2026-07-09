@@ -117,7 +117,7 @@ export function customerEmail(b: BookingPayload, siteUrl: string, consentUrl: st
   <p style="margin:0 0 16px;font-size:15px;color:${BRAND.text};">Hi ${escapeHtml(first)}, thanks for booking with IV Salt Rejuvenation! We've received your request for a mobile IV session.</p>
   <div style="background:#fff8ee;border:1px solid #f0d8a8;border-radius:12px;padding:18px;margin-bottom:20px;">
     <p style="margin:0 0 6px;font-weight:800;color:#8a5a00;font-size:15px;">⚠️ One step to confirm your appointment</p>
-    <p style="margin:0 0 14px;font-size:14px;color:#6b5326;line-height:1.6;">Your appointment isn't confirmed until you complete the medical consent form and place a refundable <strong>$${b.deposit} deposit</strong> (applied toward your treatment).${(b.partySize ?? 1) > 1 ? ` Each guest completes their own consent form and $${Math.round(b.deposit / (b.partySize ?? 1))} deposit.` : ''} You can do both in one place:</p>
+    <p style="margin:0 0 14px;font-size:14px;color:#6b5326;line-height:1.6;">Your appointment isn't confirmed until you complete the medical consent form and place a <strong>$${b.deposit} deposit</strong> (applied toward your treatment).${(b.partySize ?? 1) > 1 ? ` Each guest completes their own consent form and $${Math.round(b.deposit / (b.partySize ?? 1))} deposit.` : ''} You can do both in one place:</p>
     <a href="${consentUrl}" style="display:inline-block;background:linear-gradient(100deg,${BRAND.pink},#d61e78);color:#fff;text-decoration:none;font-weight:800;padding:13px 24px;border-radius:999px;font-size:15px;">Complete Consent Form &amp; Pay Deposit →</a>
   </div>
   <h2 style="margin:0 0 8px;font-size:15px;color:${BRAND.navy};">Your request</h2>
@@ -126,7 +126,7 @@ export function customerEmail(b: BookingPayload, siteUrl: string, consentUrl: st
   <p style="font-size:16px;color:${BRAND.pink};font-style:italic;margin-top:20px;">Your wellness. Our priority.</p>`;
   const text = `Hi ${first}, thanks for booking with IV Salt Rejuvenation!
 
-ACTION REQUIRED: Your appointment isn't confirmed until you complete the consent form and place a refundable $${b.deposit} deposit (applied to your treatment):
+ACTION REQUIRED: Your appointment isn't confirmed until you complete the consent form and place a $${b.deposit} deposit (applied to your treatment):
 ${consentUrl}
 
 Your request:

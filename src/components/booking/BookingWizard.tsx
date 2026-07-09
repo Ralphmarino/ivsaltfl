@@ -209,7 +209,7 @@ export default function BookingWizard() {
             </p>
             <p className="mt-2 text-sm leading-relaxed text-mist">
               Your appointment isn't confirmed until you complete the medical consent form and place your
-              refundable <strong className="text-cream">{money(site.depositAmount)} deposit</strong> (applied
+<strong className="text-cream">{money(site.depositAmount)} deposit</strong> (applied
               toward your treatment). You can do both in one place:
             </p>
             <a href={site.consentFormUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary mt-5 w-full">
@@ -524,7 +524,7 @@ export default function BookingWizard() {
                   className="mt-0.5 h-5 w-5 shrink-0 accent-pink" />
                 <span>
                   I understand my appointment is <strong className="text-cream">not confirmed</strong> until the
-                  medical consent form is complete and a refundable {money(depositTotal)} deposit is placed (applied to
+                  medical consent form is complete and a {money(depositTotal)} deposit is placed (applied to
                   treatment){partySize > 1 ? `, with ${money(site.depositAmount)} and a separate consent form per guest` : ''}.
                   I agree to the{' '}
                   <a href="/terms" target="_blank" className="text-teal-bright underline">Terms</a>,{' '}
@@ -595,8 +595,10 @@ export default function BookingWizard() {
               </div>
             </div>
             <div className="mt-5 rounded-xl bg-navy/60 p-3 text-xs leading-relaxed text-mist-dim">
-              <Icon name="shield" size={14} className="mb-1 inline text-teal" /> A refundable {money(site.depositAmount)} deposit
-              per guest confirms your booking and applies to your treatment. RN administered · medical-director supervised.
+              <Icon name="shield" size={14} className="mb-1 inline text-teal" /> A {money(site.depositAmount)} deposit
+              per guest confirms your booking and applies to your treatment (see our{' '}
+              <a href="/cancellation" className="text-teal-bright underline">Cancellation Policy</a>).
+              RN administered · medical-director supervised.
             </div>
           </div>
         </aside>
