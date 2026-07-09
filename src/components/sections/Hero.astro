@@ -10,10 +10,10 @@ const trust = [
 ---
 
 <section class="relative overflow-hidden pt-36 pb-20 md:pt-44 md:pb-28">
-  <!-- Ambient backdrop -->
-  <div class="aurora animate-drift"></div>
-  <div class="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-teal/10 blur-[120px]"></div>
-  <div class="pointer-events-none absolute -right-32 top-40 h-96 w-96 rounded-full bg-pink/10 blur-[120px]"></div>
+  <!-- Ambient backdrop (static; decorative glows hidden on small screens for perf) -->
+  <div class="aurora"></div>
+  <div class="pointer-events-none absolute -left-40 top-20 hidden h-96 w-96 rounded-full bg-teal/10 blur-[90px] md:block"></div>
+  <div class="pointer-events-none absolute -right-32 top-40 hidden h-96 w-96 rounded-full bg-pink/10 blur-[90px] md:block"></div>
 
   <div class="container-x relative z-10">
     <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
@@ -51,8 +51,8 @@ const trust = [
         </ul>
       </div>
 
-      <!-- Visual -->
-      <div class="relative mx-auto w-full max-w-md lg:max-w-none" data-reveal data-reveal-delay="2">
+      <!-- Visual (no reveal — this is the LCP element, paint it immediately) -->
+      <div class="relative mx-auto w-full max-w-md lg:max-w-none">
         <div class="relative aspect-[4/5] w-full">
           <!-- Glow ring -->
           <div class="absolute inset-6 rounded-[2rem] bg-gradient-to-br from-teal/20 via-pink/15 to-gold/10 blur-2xl animate-pulse-glow"></div>
@@ -66,6 +66,10 @@ const trust = [
               style="object-position: 50% 32%;"
               onerror="this.style.display='none';this.parentElement.classList.add('hero-fallback')"
               loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              width="1200"
+              height="1500"
             />
             <!-- Fallback content shown until a real photo is added -->
             <div class="hero-fallback-art absolute inset-0 hidden place-items-center bg-gradient-to-br from-navy-800 to-ink">
