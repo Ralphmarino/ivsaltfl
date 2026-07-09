@@ -51,37 +51,32 @@ const nav = [
         </a>
         <a href="/book" class="btn btn-primary !px-4 !py-2.5 text-sm md:!px-5">Book Now</a>
 
-        <!-- Mobile menu toggle -->
+        <!-- Mobile menu toggle (morphs between menu / close) -->
         <button
           id="menu-toggle"
-          class="grid h-11 w-11 place-items-center rounded-xl border border-white/10 text-cream lg:hidden"
+          class="relative grid h-11 w-11 place-items-center rounded-xl border border-white/10 text-cream lg:hidden"
           aria-label="Open menu"
           aria-expanded="false"
           aria-controls="mobile-menu"
         >
-          <Icon name="menu" size={22} />
+          <span data-icon-open><Icon name="menu" size={22} /></span>
+          <span data-icon-close class="hidden"><Icon name="close" size={22} /></span>
         </button>
       </div>
     </div>
   </div>
+</header>
 
-  <!-- Mobile menu -->
-  <div
-    id="mobile-menu"
-    class="fixed inset-0 z-40 hidden lg:hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Site menu"
-  >
+<!-- Mobile menu — sibling of <header> so the header/toggle (z-50) stays on top -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-40 hidden lg:hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Site menu"
+>
     <div class="absolute inset-0 bg-ink/80 backdrop-blur-sm" data-close-menu></div>
     <nav class="absolute right-0 top-0 flex h-full w-[82%] max-w-sm flex-col gap-1 border-l border-white/10 bg-navy-800 px-6 pt-24 pb-8 shadow-2xl">
-      <button
-        class="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-xl border border-white/10 text-cream"
-        aria-label="Close menu"
-        data-close-menu
-      >
-        <Icon name="close" size={22} />
-      </button>
       {nav.map((item) => (
         <a
           href={item.href}
@@ -97,34 +92,46 @@ const nav = [
       </a>
     </nav>
   </div>
-</header>
 
 <script>
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  const header = document.getElementById('header-bar');
+  function initHeaderMenu() {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const header = document.getElementById('header-bar');
+    if (!toggle || !menu || toggle.dataset.bound) return;
+    toggle.dataset.bound = 'true';
 
-  function openMenu() {
-    menu?.classList.remove('hidden');
-    toggle?.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMenu() {
-    menu?.classList.add('hidden');
-    toggle?.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-  toggle?.addEventListener('click', openMenu);
-  menu?.querySelectorAll('[data-close-menu]').forEach((el) => el.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !menu?.classList.contains('hidden')) closeMenu();
-  });
+    const iconOpen = toggle.querySelector('[data-icon-open]');
+    const iconClose = toggle.querySelector('[data-icon-close]');
 
-  // Solidify header on scroll
-  const onScroll = () => {
-    if (window.scrollY > 20) header?.classList.add('!bg-navy/90', 'shadow-xl', 'shadow-black/30');
-    else header?.classList.remove('!bg-navy/90', 'shadow-xl', 'shadow-black/30');
-  };
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+    const isOpen = () => !menu.classList.contains('hidden');
+    function setOpen(open) {
+      menu.classList.toggle('hidden', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      iconOpen?.classList.toggle('hidden', open);
+      iconClose?.classList.toggle('hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    toggle.addEventListener('click', () => setOpen(!isOpen()));
+    menu.querySelectorAll('[data-close-menu]').forEach((el) =>
+      el.addEventListener('click', () => setOpen(false))
+    );
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) setOpen(false);
+    });
+
+    // Solidify header on scroll
+    const onScroll = () => {
+      if (window.scrollY > 20) header?.classList.add('!bg-navy/90', 'shadow-xl', 'shadow-black/30');
+      else header?.classList.remove('!bg-navy/90', 'shadow-xl', 'shadow-black/30');
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  initHeaderMenu();
+  // Re-bind if the DOM is swapped (defensive; e.g. future view transitions)
+  document.addEventListener('astro:page-load', initHeaderMenu);
 </script>
