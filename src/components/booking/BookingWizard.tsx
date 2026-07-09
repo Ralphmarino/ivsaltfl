@@ -267,7 +267,7 @@ export default function BookingWizard() {
                 </span>
               </button>
               {i < STEPS.length - 1 && (
-                <span className={`mx-2 h-px flex-1 ${i < step ? 'bg-gradient-to-r from-teal to-pink' : 'bg-white/10'}`} />
+                <span className={`mx-3 h-0.5 flex-1 rounded-full sm:mx-5 ${i < step ? 'bg-gradient-to-r from-teal to-pink' : 'bg-white/10'}`} />
               )}
             </li>
           );
