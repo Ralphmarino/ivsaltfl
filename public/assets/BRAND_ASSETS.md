@@ -14,7 +14,7 @@ names below** and they'll appear automatically — no code changes needed.
 | `hero.jpg` | Big hero image (home) | 1000×1250 (4:5), <300 KB | A photo of Sara, an IV session, or a bright wellness shot. Until added, an elegant branded placeholder shows. |
 | `sara.jpg` | "About Sara" portrait | 900×1125 (4:5), <250 KB | A friendly professional photo of Sara. |
 | `sara-ivsalt-bio.png` | Blog author photo (Sara) | 200×200, square | Shown on blog posts as the author avatar. Until added, a brand "S" circle shows instead. |
-| `og-image.jpg` | Social share preview | 1200×630 | Shown when the site is shared on Facebook/iMessage/etc. Put your logo + tagline on-brand. |
+| `og-image.jpg` | Social share preview | 1200×630 | **Already generated** (branded logo card) and lives at `public/og-image.jpg` (site root, not this folder). Replace that file to change the link-preview image. |
 | `apple-touch-icon.png` | iOS home-screen icon | 180×180 PNG | Optional. The logo on a solid navy (#0a0e1c) background works well. |
 
 ## Tips for photos
