@@ -25,6 +25,8 @@ export interface Service {
   duration: string;
   description: string;
   icon: IconName;
+  /** optional custom SVG icon in /public/assets; falls back to `icon` if missing */
+  iconSrc?: string;
   /** signature / most-popular flag for a highlight badge */
   featured?: boolean;
 }
@@ -46,6 +48,7 @@ export const services: Service[] = [
     price: 200,
     duration: '90 min',
     icon: 'drop',
+    iconSrc: '/assets/icon-hydration.svg',
     description:
       'Replenish and revive with a classic electrolyte hydration infusion for ultimate freshness and energy.',
   },
@@ -55,6 +58,7 @@ export const services: Service[] = [
     price: 220,
     duration: '90 min',
     icon: 'palm',
+    iconSrc: '/assets/icon-salt-sand.svg',
     featured: true,
     description:
       'Our signature rejuvenation blend to refresh, energize, and boost overall wellness.',
@@ -65,6 +69,7 @@ export const services: Service[] = [
     price: 230,
     duration: '90 min',
     icon: 'shield',
+    iconSrc: '/assets/icon-immunity.svg',
     description:
       'Strengthen your immune system and shield against illness with a potent immunity infusion.',
   },
@@ -74,6 +79,7 @@ export const services: Service[] = [
     price: 260,
     duration: '90 min',
     icon: 'sparkle',
+    iconSrc: '/assets/icon-beauty-elixir.svg',
     description:
       'Enhance your natural beauty with a radiant blend of vitamins for glowing skin, hair, and nails.',
   },
@@ -83,6 +89,7 @@ export const services: Service[] = [
     price: 240,
     duration: '90 min',
     icon: 'runner',
+    iconSrc: '/assets/icon-recovery.svg',
     description:
       'Reduce inflammation, ease muscle soreness & speed up recovery with targeted hydration & nutrients.',
   },
@@ -93,6 +100,7 @@ export const services: Service[] = [
     priceFrom: true,
     duration: '4 hours',
     icon: 'cell',
+    iconSrc: '/assets/icon-nad.svg',
     description:
       'Support cellular health, energy production & healthy aging at the cellular level.',
   },

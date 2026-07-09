@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { services, addOns } from '../../data/services';
+import { services, addOns, type Service } from '../../data/services';
 import { site } from '../../data/site';
 import { Icon, Spinner } from './BookingIcons';
 
@@ -284,7 +284,7 @@ export default function BookingWizard() {
                       }`}
                     >
                       <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl ${active ? 'bg-gradient-to-br from-teal to-pink text-white' : 'bg-white/5 text-teal-bright'}`}>
-                        <Icon name={s.icon} size={22} />
+                        <ServiceIcon service={s} size={22} />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="flex items-baseline justify-between gap-2">
@@ -529,6 +529,22 @@ export default function BookingWizard() {
 /* ------------------------------------------------------------------ *
  *  Small presentational helpers
  * ------------------------------------------------------------------ */
+/** Renders a service's custom SVG icon, falling back to the built-in line icon. */
+function ServiceIcon({ service, size }: { service: Service; size: number }) {
+  const [failed, setFailed] = useState(!service.iconSrc);
+  if (failed || !service.iconSrc) return <Icon name={service.icon} size={size} />;
+  return (
+    <img
+      src={service.iconSrc}
+      alt=""
+      width={size}
+      height={size}
+      style={{ width: size, height: size, objectFit: 'contain' }}
+      onError={() => setFailed(true)}
+    />
+  );
+}
+
 function StepHead({ id, eyebrow, title, hint }: { id: string; eyebrow: string; title: string; hint: string }) {
   return (
     <div>
