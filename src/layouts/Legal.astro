@@ -27,9 +27,7 @@ const { title, path, updated = 'July 2026', description } = Astro.props;
         <div class="mt-14 rounded-2xl border border-white/8 bg-navy/40 p-6 text-sm text-mist">
           <p class="font-display text-lg text-cream">Questions?</p>
           <p class="mt-2">
-            Contact us at
-            <a href={`mailto:${site.email}`} class="text-teal-bright hover:underline">{site.email}</a>
-            or <a href={site.phoneHref} class="text-teal-bright hover:underline">{site.phone}</a>.
+            Contact us at <a href={`mailto:${site.email}`} class="text-teal-bright hover:underline">{site.email}</a> or <a href={site.phoneHref} class="text-teal-bright hover:underline">{site.phone}</a>.
           </p>
         </div>
       </div>
