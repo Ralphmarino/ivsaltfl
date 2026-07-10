@@ -230,8 +230,9 @@ export default function BookingWizard() {
                   Complete Consent Form &amp; Pay Deposit <Icon name="arrow-right" size={18} />
                 </a>
                 <p className="mt-3 text-xs leading-relaxed text-mist-dim">
-                  💡 It's the same form each time. After finishing one guest, tap the button again for the next — we also
-                  emailed you this link so you can come back to it anytime.
+                  💡 It's the same form each time. After finishing one guest, tap the button again for the next. We also
+                  emailed you this link, so you can come back anytime, or forward that email to your guests so each can
+                  complete their own.
                 </p>
               </>
             ) : (

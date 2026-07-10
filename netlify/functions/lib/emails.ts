@@ -125,6 +125,7 @@ export function customerEmail(b: BookingPayload, siteUrl: string, consentUrl: st
     <p style="margin:0 0 14px;font-size:14px;color:#6b5326;line-height:1.6;">Your appointment isn't confirmed until <strong>each guest</strong> completes the medical consent form and a <strong>$${perGuest} deposit</strong> (applied toward treatment). You booked for <strong>${party} guests</strong>, so please complete it <strong>${party} times</strong>, once per person.</p>
     ${btn}
     <p style="margin:14px 0 0;font-size:13px;color:#6b5326;line-height:1.6;">💡 <strong>Tip:</strong> after you finish one, come back to this email and tap the button again for the next guest. It's the <strong>same link</strong> every time, so just fill it out once per person.</p>
+    <p style="margin:8px 0 0;font-size:13px;color:#6b5326;line-height:1.6;">Prefer each guest to do their own? Just <strong>forward this email</strong> to them and they can complete their own consent form and deposit using the same button.</p>
   </div>`
       : `
   <div style="background:#fff8ee;border:1px solid #f0d8a8;border-radius:12px;padding:18px;margin-bottom:20px;">
