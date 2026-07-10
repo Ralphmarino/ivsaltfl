@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { services, addOns, type Service } from '../../data/services';
+import { services, addOns, type Service, type AddOn } from '../../data/services';
 import { site } from '../../data/site';
 import { Icon, Spinner } from './BookingIcons';
 
@@ -85,11 +85,16 @@ export default function BookingWizard() {
   const service = useMemo(() => services.find((s) => s.id === serviceId) ?? null, [serviceId]);
   const chosenAddOns = useMemo(() => addOns.filter((a) => selectedAddOns.includes(a.id)), [selectedAddOns]);
 
+  // Extra Boost is priced per selected boost ($60 each); other add-ons are flat.
+  const addOnPrice = (a: AddOn) => (a.id === 'extra-boost' ? a.price * boostChoices.length : a.price);
+  const addOnLabel = (a: AddOn) =>
+    a.id === 'extra-boost' && boostChoices.length ? `${a.name} (${boostChoices.join(', ')})` : a.name;
+
   const estTotal = useMemo(() => {
     const base = service?.price ?? 0;
-    const add = chosenAddOns.reduce((sum, a) => sum + a.price, 0);
+    const add = chosenAddOns.reduce((sum, a) => sum + (a.id === 'extra-boost' ? a.price * boostChoices.length : a.price), 0);
     return base + add;
-  }, [service, chosenAddOns]);
+  }, [service, chosenAddOns, boostChoices]);
 
   // Deposit is per person; state must be FL (we only serve Florida).
   const depositTotal = site.depositAmount * partySize;
@@ -163,7 +168,7 @@ export default function BookingWizard() {
       addOns: chosenAddOns.map((a) => ({
         id: a.id,
         name: a.name,
-        price: a.price,
+        price: addOnPrice(a),
         options: a.id === 'extra-boost' ? boostChoices : undefined,
       })),
       partySize,
@@ -367,22 +372,33 @@ export default function BookingWizard() {
                         <span className="min-w-0 flex-1">
                           <span className="flex items-baseline justify-between gap-2">
                             <span className="font-display text-base text-cream">{a.name}</span>
-                            <span className="shrink-0 text-sm font-bold text-gold-bright">+{money(a.price)}</span>
+                            <span className="shrink-0 text-sm font-bold text-gold-bright">+{money(a.price)}{a.id === 'extra-boost' ? ' each' : ''}</span>
                           </span>
                           <span className="mt-0.5 block text-xs text-mist">{a.description}</span>
                         </span>
                       </button>
                       {a.options && active && (
-                        <div className="mt-3 flex flex-wrap gap-2 pl-9">
-                          {a.options.map((opt) => {
-                            const on = boostChoices.includes(opt);
-                            return (
-                              <button key={opt} type="button" onClick={() => toggleBoost(opt)} aria-pressed={on}
-                                className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${on ? 'border-transparent bg-teal text-ink' : 'border-white/20 text-mist hover:border-white/40'}`}>
-                                {opt}
-                              </button>
-                            );
-                          })}
+                        <div className="mt-3 pl-9">
+                          <p className="mb-2 text-xs font-semibold text-teal-bright">Select one or more ({money(a.price)} each):</p>
+                          <div className="flex flex-wrap gap-2">
+                            {a.options.map((opt) => {
+                              const on = boostChoices.includes(opt);
+                              return (
+                                <button key={opt} type="button" onClick={() => toggleBoost(opt)} aria-pressed={on}
+                                  className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${on ? 'border-transparent bg-teal text-ink' : 'border-white/20 text-mist hover:border-white/40'}`}>
+                                  <span className={`grid h-4 w-4 place-items-center rounded-sm border ${on ? 'border-ink/40 bg-ink/10 text-ink' : 'border-white/30 text-transparent'}`}>
+                                    <Icon name="check" size={11} />
+                                  </span>
+                                  {opt}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          {boostChoices.length > 0 && (
+                            <p className="mt-2 text-xs text-mist">
+                              {boostChoices.length} selected · <span className="font-semibold text-gold-bright">+{money(a.price * boostChoices.length)}</span>
+                            </p>
+                          )}
                         </div>
                       )}
                     </div>
@@ -519,8 +535,8 @@ export default function BookingWizard() {
                     <ul className="space-y-1">
                       {chosenAddOns.map((a) => (
                         <li key={a.id} className="flex justify-between gap-3">
-                          <span className="text-cream">{a.name}{a.id === 'extra-boost' && boostChoices.length ? ` (${boostChoices.join(', ')})` : ''}</span>
-                          <span className="text-gold-bright">+{money(a.price)}</span>
+                          <span className="text-cream">{addOnLabel(a)}</span>
+                          <span className="shrink-0 text-gold-bright">+{money(addOnPrice(a))}</span>
                         </li>
                       ))}
                     </ul>
@@ -613,9 +629,9 @@ export default function BookingWizard() {
                 <span className="text-right font-medium text-cream">{service?.name ?? <span className="text-mist-dim">Not selected</span>}</span>
               </div>
               {chosenAddOns.map((a) => (
-                <div key={a.id} className="flex items-center justify-between">
-                  <span className="text-mist">+ {a.name}</span>
-                  <span className="text-gold-bright">{money(a.price)}</span>
+                <div key={a.id} className="flex items-start justify-between gap-2">
+                  <span className="text-mist">+ {addOnLabel(a)}</span>
+                  <span className="shrink-0 text-gold-bright">{money(addOnPrice(a))}</span>
                 </div>
               ))}
               {partySize > 1 && (
