@@ -1,0 +1,51 @@
+---
+import { site } from '../../data/site';
+import { testimonials } from '../../data/testimonials';
+import Icon from '../Icon.astro';
+---
+
+<section id="testimonials" class="relative scroll-mt-24 py-20 md:py-28">
+  <div class="container-x">
+    <div class="mx-auto max-w-2xl text-center" data-reveal>
+      <p class="eyebrow">What clients say</p>
+      <h2 class="mt-4 font-display text-4xl md:text-5xl">
+        Loved across the <span class="text-gradient">Treasure Coast.</span>
+      </h2>
+      <p class="mt-5 leading-relaxed text-mist">
+        Real people, real results — a few words from the folks who let us bring the drip to them.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {testimonials.map((t, i) => (
+        <figure
+          class="card relative flex h-full flex-col rounded-[1.75rem] p-6"
+          data-reveal
+          data-reveal-delay={(i % 4) + 1}
+        >
+          <div class="flex items-center gap-1 text-gold" aria-label={`${t.rating ?? 5} out of 5 stars`}>
+            {Array.from({ length: t.rating ?? 5 }).map(() => (
+              <Icon name="star" size={16} />
+            ))}
+          </div>
+          <blockquote class="mt-4 flex-1 leading-relaxed text-mist">
+            <p>“{t.quote}”</p>
+          </blockquote>
+          <figcaption class="mt-6 flex items-center gap-3 border-t border-white/8 pt-4">
+            <span class="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-pink to-gold font-display text-sm text-white">
+              {t.name.charAt(0)}
+            </span>
+            <span>
+              <span class="block font-display text-base text-cream">{t.name}</span>
+              <span class="block text-xs text-teal-bright">{t.detail ?? 'Verified client'}</span>
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <p class="mt-10 text-center text-sm text-mist-dim">
+      Loved your session? <a class="link-underline text-teal-bright" href={site.facebook} target="_blank" rel="noopener">Leave us a review on Facebook.</a>
+    </p>
+  </div>
+</section>
