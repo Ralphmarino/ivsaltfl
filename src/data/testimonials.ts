@@ -35,6 +35,6 @@ export const testimonials: Testimonial[] = [
     name: 'Rich D.',
     rating: 5,
     quote:
-      'I booked with Sara after a long week of travel and was dealing with fatigue and dehydration. She came right to my door, was punctual, and created such a calming environment. The IV therapy worked wonders — I felt rehydrated, energized, and clear-headed within hours. If you’re on the fence, just book it, you won’t regret it.',
+      'I booked with Sara after a long week of travel and was dealing with fatigue and dehydration. She came right to my door, was punctual, and created such a calming environment. The IV therapy worked wonders...I felt rehydrated, energized, and clear-headed within hours. If you’re on the fence, just book it, you won’t regret it.',
   },
 ];
