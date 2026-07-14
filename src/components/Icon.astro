@@ -96,7 +96,7 @@ const common = {
   <svg {...common}><path d="M12 5v14M5 12h14" /></svg>
 )}
 {name === 'star' && (
-  <svg {...common} fill="currentColor" stroke="none"><path d="M12 3.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.2l5.4-.8L12 3.5Z" /></svg>
+  <svg {...{ ...common, fill: 'currentColor', stroke: 'none' }}><path d="M12 3.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 9.2l5.4-.8L12 3.5Z" /></svg>
 )}
 {name === 'sms' && (
   <svg {...common}><path d="M4 5h16v11H9l-4 3v-3H4V5Z" /><path d="M8 10h.01M12 10h.01M16 10h.01" /></svg>
