@@ -23,8 +23,13 @@ const articleLd = {
   description: d.description,
   datePublished: d.publishDate.toISOString(),
   dateModified: (d.updatedDate ?? d.publishDate).toISOString(),
-  author: { '@type': 'Person', name: author.name },
+  author: d.authorOrg
+    ? { '@type': 'Organization', name: site.name, url: site.url }
+    : { '@type': 'Person', name: author.name },
   publisher: { '@type': 'Organization', name: site.name, url: site.url },
+  ...(d.reviewedBy
+    ? { reviewedBy: { '@type': 'Person', name: d.reviewedBy, jobTitle: author.role } }
+    : {}),
   mainEntityOfPage: url,
   articleSection: d.category,
   ...(d.heroImage ? { image: new URL(d.heroImage, Astro.site ?? site.url).href } : {}),
@@ -43,7 +48,7 @@ const faqLd = d.faqs?.length
   : null;
 ---
 
-<Base title={d.title} description={d.description} path={`/blog/${post.id}/`} image={d.heroImage ?? '/og-image.jpg'}>
+<Base title={d.seoTitle ?? d.title} description={d.description} path={`/blog/${post.id}/`} image={d.heroImage ?? '/og-image.jpg'}>
   <article class="relative pt-32 pb-20 md:pt-40">
     <div class="aurora opacity-50"></div>
     <div class="container-x relative z-10">
@@ -74,11 +79,22 @@ const faqLd = d.faqs?.length
           <div>
             <p class="font-semibold text-cream">{author.name}</p>
             <p class="text-xs text-mist-dim">{author.role}</p>
+            {d.byline && <p class="mt-1 text-xs text-mist-dim">{d.byline}</p>}
           </div>
         </div>
 
         {d.heroImage && (
-          <img src={d.heroImage} alt="" width="1200" height="675" class="mt-8 aspect-[16/9] w-full rounded-2xl object-cover" />
+          <img
+            src={d.heroImage}
+            alt={d.heroAlt ?? ''}
+            width="1200"
+            height="675"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="mt-8 aspect-[16/9] w-full rounded-2xl object-cover"
+            onerror="this.style.display='none'"
+          />
         )}
 
         <!-- Body -->

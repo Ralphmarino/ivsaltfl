@@ -35,7 +35,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
             <a href={`/blog/${post.id}/`} class="card card-hover group flex flex-col overflow-hidden rounded-3xl" data-reveal data-reveal-delay={(((i % 2) + 1)).toString()}>
               <div class="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-navy-800 to-ink">
                 {post.data.heroImage ? (
-                  <img src={post.data.heroImage} alt="" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  <img src={post.data.heroImage} alt={post.data.heroAlt ?? ''} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onerror="this.style.display='none'" />
                 ) : (
                   <div class="grid h-full place-items-center">
                     <span class="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-teal to-pink text-white"><Icon name="drop" size={30} /></span>
