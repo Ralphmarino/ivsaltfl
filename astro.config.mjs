@@ -17,8 +17,8 @@ export default defineConfig({
   site: SITE,
   integrations: [
     react(),
-    // Keep noindex utility pages (e.g. the share-only /reserve link) out of the sitemap.
-    sitemap({ filter: (page) => !page.includes('/reserve') }),
+    // Keep noindex utility pages (e.g. the share-only /consent link) out of the sitemap.
+    sitemap({ filter: (page) => !page.includes('/consent') }),
   ],
   vite: {
     plugins: [tailwindcss()],

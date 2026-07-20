@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
 
-const reserveUrl = 'https://ivsaltfl.com/reserve';
+const consentUrl = 'https://ivsaltfl.com/consent';
 const steps = [
   {
     icon: 'check',
@@ -21,7 +21,7 @@ const steps = [
 <Base
   title="Consent & Deposit"
   description={`Complete your medical consent form and $${site.depositAmount} deposit to reserve your mobile IV session with IV Salt Rejuvenation — no scheduling required.`}
-  path="/reserve"
+  path="/consent"
   noindex={true}
 >
   <section class="relative overflow-hidden pt-32 pb-20 md:pt-40">
@@ -76,8 +76,8 @@ const steps = [
           <div class="mx-auto">
             <div class="rounded-2xl bg-white p-4 shadow-lg shadow-black/30">
               <img
-                src="/assets/reserve-qr.svg"
-                alt={`QR code linking to ${reserveUrl}`}
+                src="/assets/consent-qr.svg"
+                alt={`QR code linking to ${consentUrl}`}
                 width="180"
                 height="180"
                 class="h-44 w-44"
@@ -92,13 +92,13 @@ const steps = [
               Great for cards, flyers, and events.
             </p>
             <p class="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-navy/50 px-4 py-2 font-mono text-sm text-teal-bright">
-              <Icon name="map-pin" size={15} class="text-teal" /> ivsaltfl.com/reserve
+              <Icon name="map-pin" size={15} class="text-teal" /> ivsaltfl.com/consent
             </p>
             <div class="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
-              <a href="/assets/reserve-qr.png" download class="btn btn-teal !px-4 !py-2.5 text-sm">
+              <a href="/assets/consent-qr.png" download class="btn btn-teal !px-4 !py-2.5 text-sm">
                 Download QR (print)
               </a>
-              <a href="/assets/reserve-qr.svg" download class="btn btn-ghost !px-4 !py-2.5 text-sm">
+              <a href="/assets/consent-qr.svg" download class="btn btn-ghost !px-4 !py-2.5 text-sm">
                 Download SVG (vector)
               </a>
             </div>
