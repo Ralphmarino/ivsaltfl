@@ -15,7 +15,11 @@ const SITE = process.env.URL || 'https://ivsaltfl.com';
 // https://astro.build/config
 export default defineConfig({
   site: SITE,
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    // Keep noindex utility pages (e.g. the share-only /reserve link) out of the sitemap.
+    sitemap({ filter: (page) => !page.includes('/reserve') }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },
