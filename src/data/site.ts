@@ -57,7 +57,7 @@ export const site = {
   // Medical Director — physician oversight (required in Florida).
   medicalDirector: {
     name: 'Dr. Edward W. Pearson, MD, ABIHM',
-    shortName: 'Edward W. Pearson, MD',
+    shortName: 'Edward W. Pearson, MD, ABIHM',
     role: 'Medical Director',
     image: '/assets/Edward-Pearson.jpg',
     bio:
@@ -66,7 +66,7 @@ export const site = {
 
   // Compliance copy shown across the site
   medicalDisclaimer:
-    'All IV therapies are administered by a licensed Registered Nurse under the supervision of our Medical Director, Edward W. Pearson, MD. Clients must complete a medical screening and consent form prior to treatment. IV therapy services are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary.',
+    'All IV therapies are administered by a licensed Registered Nurse under the supervision of our Medical Director, Edward W. Pearson, MD, ABIHM. Clients must complete a medical screening and consent form prior to treatment. IV therapy services are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary.',
   supervisedNote: 'Medical Director Supervised',
 } as const;
 

@@ -1,5 +1,6 @@
 ---
 import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
 ---
 <Legal title="HIPAA Notice of Privacy Practices" path="/hipaa">
   <p>
@@ -10,13 +11,15 @@ import Legal from '../layouts/Legal.astro';
   <p>
     IV Salt Rejuvenation is committed to protecting the privacy of your protected health information ("PHI").
     We are required by law to maintain the privacy of your PHI, to provide you with this notice of our legal
-    duties and privacy practices, and to follow the terms of the notice currently in effect.
+    duties and privacy practices, and to follow the terms of the notice currently in effect. All care is
+    provided by a licensed Registered Nurse under the supervision of our Medical Director,
+    {site.medicalDirector.shortName}.
   </p>
 
   <h2>How We May Use and Disclose Your Health Information</h2>
   <ul>
     <li><strong>Treatment</strong> — to provide, coordinate, and manage your IV therapy, including sharing
-      information among our registered nurse and supervising medical director.</li>
+      information among our registered nurse and supervising Medical Director, {site.medicalDirector.shortName}.</li>
     <li><strong>Payment</strong> — to obtain your deposit and payment for services.</li>
     <li><strong>Health Care Operations</strong> — for quality, safety, training, and administrative purposes.</li>
     <li><strong>Appointment Reminders</strong> — to contact you about scheduled or requested appointments.</li>
