@@ -45,8 +45,8 @@ import Icon from '../Icon.astro';
           directly to you across the Treasure Coast — with the care, comfort, and attention you deserve.
         </p>
         <p class="mt-4 leading-relaxed text-mist">
-          Every treatment is administered by a registered nurse under the supervision of a medical
-          director, so you can relax knowing you're in expert hands.
+          Every treatment is administered by a registered nurse under the supervision of our medical
+          director, {site.medicalDirector.name}, so you can relax knowing you're in expert hands.
         </p>
 
         <div class="mt-8 grid gap-4 sm:grid-cols-3">
@@ -60,6 +60,30 @@ import Icon from '../Icon.astro';
         </div>
 
         <p class="mt-8 text-script text-3xl">{site.motto}</p>
+      </div>
+    </div>
+
+    <!-- Medical Director -->
+    <div class="mt-14 md:mt-20" data-reveal>
+      <div class="card overflow-hidden rounded-[2rem] p-6 sm:p-8">
+        <div class="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-start sm:text-left sm:gap-8">
+          <img
+            src={site.medicalDirector.image}
+            alt={`${site.medicalDirector.name}, ${site.medicalDirector.role} of IV Salt Rejuvenation`}
+            width="112"
+            height="112"
+            class="h-28 w-28 shrink-0 rounded-2xl object-cover"
+            style="object-position: 50% 20%;"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          />
+          <div>
+            <p class="eyebrow">Physician Oversight</p>
+            <h3 class="mt-2 font-display text-2xl text-cream">{site.medicalDirector.name}</h3>
+            <p class="text-sm font-semibold text-teal-bright">{site.medicalDirector.role}</p>
+            <p class="mt-4 leading-relaxed text-mist">{site.medicalDirector.bio}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
