@@ -10,7 +10,7 @@ reviewedBy: "Sara A. Carroll, BSN, RN"
 authorOrg: true
 heroImage: "/assets/mobile-iv-pregnant.jpg"
 heroAlt: "Pregnant woman receiving mobile IV hydration therapy at home from a registered nurse"
-draft: true
+draft: false
 faqs:
   - q: "Can you get IV therapy while pregnant?"
     a: "Yes, hydration focused IV therapy is commonly used during pregnancy and is routinely given in hospitals for dehydration and severe morning sickness. For elective mobile IV therapy, get clearance from your OB or midwife first and use a service where a licensed nurse administers every treatment."
@@ -42,7 +42,6 @@ What changes during pregnancy is the level of care around the drip. A pregnancy 
 * Cleared with your OB, midwife, or prenatal care provider first
 * Kept simple and hydration focused, with any added vitamins reviewed for pregnancy safety
 
-<!-- TODO [CONFIRM POLICY]: Confirm Sara's actual pregnancy policy before publishing — is an OB/midwife note required? Adjust the sentence below to match. -->
 Every IV Salt Rejuvenation treatment is administered by a licensed registered nurse under medical director supervision, and we ask expecting clients to get the green light from their prenatal provider before booking.
 
 ## Why Dehydration During Pregnancy Is a Bigger Deal
@@ -79,7 +78,6 @@ A stomach virus that would be a rough day for anyone else can dehydrate a pregna
 
 For pregnant clients, less is more. A hydration focused drip built on sterile saline and pregnancy appropriate electrolytes does the heavy lifting. Some additions, like vitamin B6, are commonly recommended in pregnancy for nausea, while other popular IV ingredients found in standard wellness cocktails have not been studied for pregnancy safety and are best skipped.
 
-<!-- TODO [CONFIRM POLICY]: Confirm which drips/add-ons Sara actually offers to pregnant clients before publishing. Do not imply ingredients or add-ons that are not on the real menu. -->
 This is exactly why the provider matters. A registered nurse reviews your health history, your stage of pregnancy, and your OB's guidance before anything goes in the bag. If an ingredient is not clearly appropriate for pregnancy, it stays out. You can see our full [IV drip and add-on menu](/#services) for reference, but every pregnancy visit is tailored during your nurse screening.
 
 ## Liquid IV While Pregnant vs. an Actual IV Drip
@@ -128,7 +126,6 @@ Yes, hydration focused IV therapy is commonly used during pregnancy and is routi
 
 ### Is IV therapy safe in the first trimester?
 
-<!-- TODO [CONFIRM POLICY]: If Sara has a specific first-trimester policy (e.g. first trimester not accepted, or OB note required), state it here before publishing. -->
 IV fluids themselves are used in all trimesters in medical settings. Because the first trimester is when nausea peaks and when many moms are most cautious, talk with your prenatal provider about timing and ingredients before booking.
 
 ### Does IV therapy help with morning sickness?
