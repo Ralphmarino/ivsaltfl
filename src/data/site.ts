@@ -20,6 +20,8 @@ export const site = {
 
   // Social
   facebook: 'https://www.facebook.com/profile.php?id=61591585116803',
+  // Google Business Profile — opens the "leave a review" dialog.
+  googleReview: 'https://g.page/r/CXOpH2aQaP6fEBM/review',
 
   // Announcement bar (top of every page)
   announcement: 'Now taking appointments',
