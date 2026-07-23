@@ -64,7 +64,7 @@ One honest note, because trust matters more to us than hype: IV hydration therap
 
 For most healthy adults, yes, when it is performed by licensed medical professionals using sterile, single-use equipment and pharmaceutical-grade ingredients. The most common side effects are minor: brief discomfort at the insertion site, small bruising, or a cool sensation in the arm during the drip.
 
-Safety comes down to who is holding the needle and what is in the bag. Before booking with any provider on the Treasure Coast, confirm three things: a licensed nurse or paramedic administers the IV, a physician or medical director oversees the practice, and every client completes a health screening first. People with kidney disease, congestive heart failure, or certain other conditions should not receive elective IV fluids without clearance from their doctor, and a good provider will screen for exactly that before starting.
+Safety comes down to who is holding the needle and what is in the bag. Before booking with any provider on the Treasure Coast, confirm three things: a licensed nurse or paramedic administers the IV, a physician or medical director oversees the practice, and every client completes a health screening first. People with kidney disease, congestive heart failure, or certain other conditions should not receive elective IV fluids without clearance from their doctor, and a good provider will screen for exactly that before starting. If you are expecting, see our guide to [IV therapy while pregnant](/blog/iv-therapy-while-pregnant/) for the extra safety steps that apply.
 
 ## What Does IV Therapy Cost on the Treasure Coast?
 
