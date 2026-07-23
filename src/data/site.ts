@@ -54,9 +54,19 @@ export const site = {
     // '2026-12-25', // example: Christmas
   ] as string[],
 
+  // Medical Director — physician oversight (required in Florida).
+  medicalDirector: {
+    name: 'Dr. Edward W. Pearson, MD, ABIHM',
+    shortName: 'Edward W. Pearson, MD',
+    role: 'Medical Director',
+    image: '/assets/Edward-Pearson.jpg',
+    bio:
+      'A Stuart-based physician, Dr. Pearson earned his medical degree at the University of South Florida College of Medicine and is board certified by the American Board of Integrative Holistic Medicine (ABIHM). He has served as medical director for numerous medical and wellness practices across Florida. At IV Salt Rejuvenation, he provides physician oversight of our clinical protocols and supervises the registered-nurse care every client receives.',
+  },
+
   // Compliance copy shown across the site
   medicalDisclaimer:
-    'All IV therapies are administered by a licensed Registered Nurse under the supervision of a medical director. Clients must complete a medical screening and consent form prior to treatment. IV therapy services are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary.',
+    'All IV therapies are administered by a licensed Registered Nurse under the supervision of our Medical Director, Edward W. Pearson, MD. Clients must complete a medical screening and consent form prior to treatment. IV therapy services are not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary.',
   supervisedNote: 'Medical Director Supervised',
 } as const;
 
