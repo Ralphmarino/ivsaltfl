@@ -43,9 +43,27 @@ import Icon from '../Icon.astro';
           </div>
 
           <h3 class="mt-5 font-display text-2xl text-cream">{s.name}</h3>
-          <p class="mt-2.5 flex-1 text-sm leading-relaxed text-mist">{s.description}</p>
+          {s.subtitle && <p class="mt-1 text-sm font-medium text-teal-bright">{s.subtitle}</p>}
+          <p class="mt-2.5 text-sm leading-relaxed text-mist">{s.description}</p>
 
-          <div class="mt-6 flex items-end justify-between border-t border-white/8 pt-5">
+          {(s.ingredients || s.doses) && (
+            <details class="menu-ing mt-4">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-2 text-[0.7rem] font-semibold uppercase tracking-wider text-mist-dim transition-colors hover:text-teal-bright">
+                <span>{s.doses ? 'Dosage options' : "What's inside"}</span>
+                <Icon name="chevron-down" size={15} class="menu-ing-chevron transition-transform duration-300" />
+              </summary>
+              <ul class="mt-3 space-y-1.5">
+                {(s.ingredients ?? s.doses ?? []).map((x) => (
+                  <li class="flex items-start gap-2 text-sm text-mist">
+                    <span class="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-teal-bright"></span>
+                    <span>{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+
+          <div class="mt-auto flex items-end justify-between border-t border-white/8 pt-5">
             <div>
               {s.priceFrom && <span class="block text-[0.65rem] font-semibold uppercase tracking-wider text-mist-dim">Starting at</span>}
               <span class="font-display text-3xl text-gold-bright">${s.price}</span>
@@ -66,3 +84,9 @@ import Icon from '../Icon.astro';
     </div>
   </div>
 </section>
+
+<style is:global>
+  .menu-ing summary::-webkit-details-marker { display: none; }
+  .menu-ing summary::marker { content: ''; }
+  .menu-ing[open] .menu-ing-chevron { transform: rotate(180deg); }
+</style>

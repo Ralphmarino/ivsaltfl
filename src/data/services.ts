@@ -19,6 +19,8 @@ export type IconName =
 export interface Service {
   id: string;
   name: string;
+  /** optional clarifier under the name, e.g. "Myers Cocktail" */
+  subtitle?: string;
   price: number;
   /** true when price is a "starting at" figure */
   priceFrom?: boolean;
@@ -29,6 +31,10 @@ export interface Service {
   iconSrc?: string;
   /** signature / most-popular flag for a highlight badge */
   featured?: boolean;
+  /** what's in the drip — shown in a collapsible menu dropdown */
+  ingredients?: string[];
+  /** dose options (NAD+), shown in a collapsible dropdown instead of ingredients */
+  doses?: string[];
 }
 
 export interface AddOn {
@@ -51,10 +57,12 @@ export const services: Service[] = [
     iconSrc: '/assets/icon-hydration.svg',
     description:
       'Replenish and revive with a classic electrolyte hydration infusion for ultimate freshness and energy.',
+    ingredients: ['Preserved Ascorbic Acid (Vitamin C)', 'Vita Complex', 'Mineral Complex'],
   },
   {
     id: 'salt-sand-infusion',
     name: 'Salt & Sand Infusion',
+    subtitle: 'Our Myers Cocktail',
     price: 220,
     duration: '90 min',
     icon: 'palm',
@@ -62,6 +70,14 @@ export const services: Service[] = [
     featured: true,
     description:
       'Our signature rejuvenation blend to refresh, energize, and boost overall wellness.',
+    ingredients: [
+      'Vita Complex',
+      'Preserved Ascorbic Acid (Vitamin C)',
+      'Magnesium',
+      'Hydroxocobalamin (Vitamin B12)',
+      'Calcium Chloride',
+      'Ondansetron (as indicated)',
+    ],
   },
   {
     id: 'immunity-wave',
@@ -72,6 +88,7 @@ export const services: Service[] = [
     iconSrc: '/assets/icon-immunity.svg',
     description:
       'Strengthen your immune system and shield against illness with a potent immunity infusion.',
+    ingredients: ['Preserved Ascorbic Acid (Vitamin C)', 'Glutathione', 'Zinc'],
   },
   {
     id: 'beauty-elixir',
@@ -82,6 +99,7 @@ export const services: Service[] = [
     iconSrc: '/assets/icon-beauty-elixir.svg',
     description:
       'Enhance your natural beauty with a radiant blend of vitamins for glowing skin, hair, and nails.',
+    ingredients: ['Preserved Ascorbic Acid (Vitamin C)', 'Biotin', 'Vita Complex', 'Glutathione'],
   },
   {
     id: 'recovery-therapy',
@@ -92,6 +110,7 @@ export const services: Service[] = [
     iconSrc: '/assets/icon-recovery.svg',
     description:
       'Reduce inflammation, ease muscle soreness & speed up recovery with targeted hydration & nutrients.',
+    ingredients: ['Preserved Ascorbic Acid (Vitamin C)', 'Vita Complex (B-Complex)', 'Amino Blend', 'Mineral Blend'],
   },
   {
     id: 'nad-therapy',
@@ -103,6 +122,7 @@ export const services: Service[] = [
     iconSrc: '/assets/icon-nad.svg',
     description:
       'Support cellular health, energy production & healthy aging at the cellular level.',
+    doses: ['250 mg', '500 mg', '750 mg', '1000 mg'],
   },
 ];
 
