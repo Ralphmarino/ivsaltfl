@@ -345,8 +345,21 @@ export default function BookingWizard() {
                             {s.priceFrom ? 'from ' : ''}{money(s.price)}
                           </span>
                         </span>
+                        {s.subtitle && <span className="mt-0.5 block text-xs font-medium text-teal-bright">{s.subtitle}</span>}
                         <span className="mt-1 block text-xs leading-relaxed text-mist">{s.description}</span>
                         <span className="mt-1.5 flex items-center gap-1 text-xs text-mist-dim"><Icon name="clock" size={13} /> {s.duration}</span>
+                        {active && (s.ingredients || s.doses) && (
+                          <span className="mt-2.5 block border-t border-white/10 pt-2.5">
+                            <span className="block text-[0.65rem] font-semibold uppercase tracking-wider text-mist-dim">
+                              {s.doses ? 'Dosage options' : "What's inside"}
+                            </span>
+                            <span className="mt-1.5 flex flex-wrap gap-1.5">
+                              {(s.ingredients ?? s.doses ?? []).map((x) => (
+                                <span key={x} className="rounded-full border border-white/10 bg-white/[0.03] px-2 py-0.5 text-[0.7rem] text-mist">{x}</span>
+                              ))}
+                            </span>
+                          </span>
+                        )}
                       </span>
                     </button>
                   );
