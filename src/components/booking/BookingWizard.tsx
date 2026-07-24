@@ -55,6 +55,7 @@ function availableDates(windowDays: number, blackout: string[]): { iso: string; 
 export default function BookingWizard() {
   const [step, setStep] = useState(0);
   const [serviceId, setServiceId] = useState<string | null>(null);
+  const [nadDose, setNadDose] = useState<number>(250); // NAD+ dose in mg; defaults to 250 mg
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [boostChoices, setBoostChoices] = useState<string[]>([]);
   const [details, setDetails] = useState<Details>(emptyDetails);
@@ -69,9 +70,11 @@ export default function BookingWizard() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const pre = params.get('service');
-    if (pre && services.some((s) => s.id === pre)) {
-      setServiceId(pre);
-      setStep(1);
+    const preSvc = pre ? services.find((s) => s.id === pre) : undefined;
+    if (preSvc) {
+      setServiceId(preSvc.id);
+      // Land on the dose picker (Step 1) for dose-priced therapies; otherwise skip ahead.
+      setStep(preSvc.doseOptions ? 0 : 1);
     }
   }, []);
 
@@ -85,16 +88,27 @@ export default function BookingWizard() {
   const service = useMemo(() => services.find((s) => s.id === serviceId) ?? null, [serviceId]);
   const chosenAddOns = useMemo(() => addOns.filter((a) => selectedAddOns.includes(a.id)), [selectedAddOns]);
 
+  // NAD+ (and any doseOptions service) is priced by the selected dose; the first
+  // option is the default. Other therapies use their flat `price`.
+  const selectedDose = useMemo(
+    () => service?.doseOptions?.find((d) => d.mg === nadDose) ?? service?.doseOptions?.[0] ?? null,
+    [service, nadDose],
+  );
+  const basePrice = selectedDose ? selectedDose.price : service?.price ?? 0;
+
   // Extra Boost is priced per selected boost ($60 each); other add-ons are flat.
   const addOnPrice = (a: AddOn) => (a.id === 'extra-boost' ? a.price * boostChoices.length : a.price);
   const addOnLabel = (a: AddOn) =>
     a.id === 'extra-boost' && boostChoices.length ? `${a.name} (${boostChoices.join(', ')})` : a.name;
 
   const estTotal = useMemo(() => {
-    const base = service?.price ?? 0;
     const add = chosenAddOns.reduce((sum, a) => sum + (a.id === 'extra-boost' ? a.price * boostChoices.length : a.price), 0);
-    return base + add;
-  }, [service, chosenAddOns, boostChoices]);
+    return basePrice + add;
+  }, [basePrice, chosenAddOns, boostChoices]);
+
+  // Show a "~" prefix only when the total is genuinely an estimate (add-ons or
+  // multiple guests). With a dose selected, the NAD+ base price is now exact.
+  const priceEstimate = chosenAddOns.length > 0 || partySize > 1;
 
   // Deposit is per person; state must be FL (we only serve Florida).
   const depositTotal = site.depositAmount * partySize;
@@ -164,7 +178,17 @@ export default function BookingWizard() {
     }
     setStatus('sending');
     const payload = {
-      service: service ? { id: service.id, name: service.name, price: service.price, priceFrom: !!service.priceFrom, duration: service.duration } : null,
+      service: service
+        ? {
+            id: service.id,
+            // Include the dose in the name so it shows on every notification (email, SMS, calendar).
+            name: selectedDose ? `${service.name} (${selectedDose.label})` : service.name,
+            price: basePrice,
+            priceFrom: !selectedDose && !!service.priceFrom,
+            duration: service.duration,
+            dose: selectedDose?.label ?? null,
+          }
+        : null,
       addOns: chosenAddOns.map((a) => ({
         id: a.id,
         name: a.name,
@@ -348,13 +372,11 @@ export default function BookingWizard() {
                         {s.subtitle && <span className="mt-0.5 block text-xs font-medium text-teal-bright">{s.subtitle}</span>}
                         <span className="mt-1 block text-xs leading-relaxed text-mist">{s.description}</span>
                         <span className="mt-1.5 flex items-center gap-1 text-xs text-mist-dim"><Icon name="clock" size={13} /> {s.duration}</span>
-                        {active && (s.ingredients || s.doses) && (
+                        {active && s.ingredients && (
                           <span className="mt-2.5 block border-t border-white/10 pt-2.5">
-                            <span className="block text-[0.65rem] font-semibold uppercase tracking-wider text-mist-dim">
-                              {s.doses ? 'Dosage options' : "What's inside"}
-                            </span>
+                            <span className="block text-[0.65rem] font-semibold uppercase tracking-wider text-mist-dim">What's inside</span>
                             <span className="mt-1.5 flex flex-wrap gap-1.5">
-                              {(s.ingredients ?? s.doses ?? []).map((x) => (
+                              {s.ingredients.map((x) => (
                                 <span key={x} className="rounded-full border border-white/10 bg-white/[0.03] px-2 py-0.5 text-[0.7rem] text-mist">{x}</span>
                               ))}
                             </span>
@@ -365,6 +387,36 @@ export default function BookingWizard() {
                   );
                 })}
               </div>
+
+              {/* NAD+ dose picker — appears when a doseOptions therapy is selected */}
+              {service?.doseOptions && (
+                <div className="mt-5 rounded-2xl border border-teal/30 bg-teal/[0.06] p-4">
+                  <p className="text-sm font-semibold text-cream">Choose your NAD+ dose</p>
+                  <p className="mt-0.5 text-xs text-mist">Price is set by the dose you pick. Not sure? Start at 250 mg — your nurse can advise.</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    {service.doseOptions.map((d) => {
+                      const on = selectedDose?.mg === d.mg;
+                      return (
+                        <button
+                          key={d.mg}
+                          type="button"
+                          onClick={() => setNadDose(d.mg)}
+                          aria-pressed={on}
+                          className={`flex flex-col rounded-xl border p-3 text-left transition ${
+                            on ? 'border-teal-bright bg-teal/10 shadow-lg shadow-teal/10' : 'border-white/10 hover:border-white/25 hover:bg-white/[0.03]'
+                          }`}
+                        >
+                          <span className="flex items-baseline justify-between gap-2">
+                            <span className="font-display text-base text-cream">NAD+ {d.label}</span>
+                            <span className="shrink-0 text-sm font-bold text-gold-bright">{money(d.price)}</span>
+                          </span>
+                          <span className="mt-1 text-xs leading-relaxed text-mist">{d.blurb}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </section>
           )}
 
@@ -538,8 +590,8 @@ export default function BookingWizard() {
               <StepHead id="step-review" eyebrow="Step 5" title="Review & request" hint="Double-check everything, then send your request." />
               <div className="mt-6 space-y-3">
                 <ReviewRow label="Therapy" onEdit={() => setStep(0)}>
-                  <span className="text-cream">{service?.name}</span>
-                  <span className="text-gold-bright">{service?.priceFrom ? 'from ' : ''}{money(service?.price ?? 0)}</span>
+                  <span className="text-cream">{service?.name}{selectedDose ? ` · ${selectedDose.label}` : ''}</span>
+                  <span className="text-gold-bright">{money(basePrice)}</span>
                 </ReviewRow>
                 <ReviewRow label="Add-ons" onEdit={() => setStep(1)}>
                   {chosenAddOns.length === 0 ? (
@@ -576,7 +628,7 @@ export default function BookingWizard() {
                     Estimated total{partySize > 1 ? ` (${partySize} guests)` : ''}
                     <span className="block text-xs text-mist-dim">Final total confirmed by your nurse</span>
                   </span>
-                  <span className="font-display text-2xl text-gold-bright">{service?.priceFrom || chosenAddOns.length || partySize > 1 ? '~' : ''}{money(estTotal * partySize)}</span>
+                  <span className="font-display text-2xl text-gold-bright">{priceEstimate ? '~' : ''}{money(estTotal * partySize)}</span>
                 </div>
                 <div className="flex items-center justify-between border-t border-gold/15 pt-2">
                   <span className="text-sm text-mist">
@@ -639,7 +691,7 @@ export default function BookingWizard() {
             <div className="mt-4 space-y-3 text-sm">
               <div className="flex items-center justify-between">
                 <span className="text-mist">Therapy</span>
-                <span className="text-right font-medium text-cream">{service?.name ?? <span className="text-mist-dim">Not selected</span>}</span>
+                <span className="text-right font-medium text-cream">{service ? `${service.name}${selectedDose ? ` · ${selectedDose.label}` : ''}` : <span className="text-mist-dim">Not selected</span>}</span>
               </div>
               {chosenAddOns.map((a) => (
                 <div key={a.id} className="flex items-start justify-between gap-2">
@@ -655,7 +707,7 @@ export default function BookingWizard() {
               )}
               <div className="flex items-center justify-between border-t border-white/8 pt-3">
                 <span className="font-semibold text-cream">Est. total</span>
-                <span className="font-display text-xl text-gold-bright">{service ? `${service.priceFrom || chosenAddOns.length || partySize > 1 ? '~' : ''}${money(estTotal * partySize)}` : '—'}</span>
+                <span className="font-display text-xl text-gold-bright">{service ? `${priceEstimate ? '~' : ''}${money(estTotal * partySize)}` : '—'}</span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-mist-dim">Deposit to confirm</span>
@@ -682,8 +734,8 @@ export default function BookingWizard() {
               </button>
             )}
             <div className="min-w-0 flex-1 text-xs text-mist-dim">
-              <span className="block truncate">{service ? service.name : 'Select a therapy'}</span>
-              <span className="text-cream">{service ? `${service.priceFrom || chosenAddOns.length || partySize > 1 ? '~' : ''}${money(estTotal * partySize)}` : ''}</span>
+              <span className="block truncate">{service ? `${service.name}${selectedDose ? ` · ${selectedDose.label}` : ''}` : 'Select a therapy'}</span>
+              <span className="text-cream">{service ? `${priceEstimate ? '~' : ''}${money(estTotal * partySize)}` : ''}</span>
             </div>
             {step < STEPS.length - 1 ? (
               <button type="button" onClick={next} className="btn btn-primary !px-6 shrink-0">

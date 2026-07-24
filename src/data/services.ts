@@ -16,6 +16,18 @@ export type IconName =
   | 'heart'
   | 'molecule';
 
+/** A priced dose tier, e.g. NAD+ 250 mg at $300. */
+export interface DoseOption {
+  /** dose in milligrams — stable key used by the booking wizard */
+  mg: number;
+  /** display label, e.g. "250 mg" */
+  label: string;
+  /** full treatment price for this dose, in whole US dollars */
+  price: number;
+  /** short write-up shown next to the dose */
+  blurb: string;
+}
+
 export interface Service {
   id: string;
   name: string;
@@ -33,8 +45,8 @@ export interface Service {
   featured?: boolean;
   /** what's in the drip — shown in a collapsible menu dropdown */
   ingredients?: string[];
-  /** dose options (NAD+), shown in a collapsible dropdown instead of ingredients */
-  doses?: string[];
+  /** priced dose tiers (NAD+) — the client picks one at booking; the first is the default */
+  doseOptions?: DoseOption[];
 }
 
 export interface AddOn {
@@ -122,7 +134,12 @@ export const services: Service[] = [
     iconSrc: '/assets/icon-nad.svg',
     description:
       'Support cellular health, energy production & healthy aging at the cellular level.',
-    doses: ['250 mg', '500 mg', '750 mg', '1000 mg'],
+    doseOptions: [
+      { mg: 250, label: '250 mg', price: 300, blurb: 'Great for first-time clients or a gentle energy and mental clarity boost.' },
+      { mg: 500, label: '500 mg', price: 400, blurb: 'Most popular option for ongoing wellness and recovery.' },
+      { mg: 750, label: '750 mg', price: 500, blurb: 'A stronger step up for deeper restoration, focus, and sustained energy.' },
+      { mg: 1000, label: '1,000 mg', price: 600, blurb: 'Premium intensive therapy for experienced clients.' },
+    ],
   },
 ];
 
