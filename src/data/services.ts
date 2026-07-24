@@ -76,7 +76,7 @@ export const services: Service[] = [
       'Magnesium',
       'Hydroxocobalamin (Vitamin B12)',
       'Calcium Chloride',
-      'Ondansetron (as indicated)',
+      'Anti-nausea support (Ondansetron, as indicated)',
     ],
   },
   {
