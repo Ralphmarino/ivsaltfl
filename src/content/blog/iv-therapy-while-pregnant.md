@@ -97,7 +97,7 @@ If sipping electrolyte water is not cutting it, that is usually the moment an IV
 
 Safety comes down to three things: who administers it, what is in it, and whether your prenatal provider is in the loop.
 
-At IV Salt Rejuvenation, every appointment is handled by a licensed registered nurse under medical director supervision. Before your drip, your nurse reviews your health history and pregnancy details, confirms provider clearance, and monitors you throughout the treatment. You relax on your own couch, and your nurse handles the rest.
+At IV Salt Rejuvenation, every appointment is handled by a licensed registered nurse under medical director supervision. Before your drip, your nurse reviews your health history and pregnancy details, confirms provider clearance, and monitors you throughout the treatment. You relax on your own couch, and your nurse handles the rest. If you are nervous about needles, you are not alone during pregnancy or otherwise, and our guide on [how to get over a fear of needles](/blog/scared-of-needles-iv-therapy/) walks through simple ways to make the stick easier.
 
 A few honest guardrails we want every expecting mom to know:
 
