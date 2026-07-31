@@ -64,7 +64,7 @@ export const services: Service[] = [
     id: 'hydration-haven',
     name: 'Hydration Haven',
     price: 200,
-    duration: '90 min',
+    duration: '60-90 min',
     icon: 'drop',
     iconSrc: '/assets/icon-hydration.svg',
     description:
@@ -76,7 +76,7 @@ export const services: Service[] = [
     name: 'Salt & Sand Infusion',
     subtitle: 'Our Myers Cocktail',
     price: 220,
-    duration: '90 min',
+    duration: '60-90 min',
     icon: 'palm',
     iconSrc: '/assets/icon-salt-sand.svg',
     featured: true,
@@ -95,7 +95,7 @@ export const services: Service[] = [
     id: 'immunity-wave',
     name: 'Immunity Wave',
     price: 230,
-    duration: '90 min',
+    duration: '60-90 min',
     icon: 'shield',
     iconSrc: '/assets/icon-immunity.svg',
     description:
@@ -106,7 +106,7 @@ export const services: Service[] = [
     id: 'beauty-elixir',
     name: 'Beauty Elixir',
     price: 260,
-    duration: '90 min',
+    duration: '60-90 min',
     icon: 'sparkle',
     iconSrc: '/assets/icon-beauty-elixir.svg',
     description:
@@ -117,7 +117,7 @@ export const services: Service[] = [
     id: 'recovery-therapy',
     name: 'Recovery Therapy',
     price: 240,
-    duration: '90 min',
+    duration: '60-90 min',
     icon: 'runner',
     iconSrc: '/assets/icon-recovery.svg',
     description:
