@@ -43,7 +43,7 @@ With a mobile service, the clinic comes to you. Here is what a visit with IV Sal
 
 1. You book by phone at 772-222-7108 or through our [online scheduling page](/book), and choose the drip that matches your goal, whether that is rehydration, recovery, immune support, or beauty and wellness.
 2. A licensed Registered Nurse arrives at your home, office, hotel, or event and completes a brief health screening and consent form.
-3. Your nurse places the IV, starts the drip, and monitors you throughout. Most treatments take about 45 to 60 minutes.
+3. Your nurse places the IV, starts the drip, and monitors you throughout. Most treatments take about 45 to 60 minutes. (Here is more on [how long IV therapy lasts](/blog/how-long-does-iv-therapy-last/) once it is done.)
 4. You rest on your own couch while it runs. No waiting room, no drive home afterward.
 
 Every IV Salt Rejuvenation treatment is administered by a licensed RN under the supervision of our medical director. That nurse-led, physician-supervised model is the standard you should expect from any IV provider you consider, mobile or not.

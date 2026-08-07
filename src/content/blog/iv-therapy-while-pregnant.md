@@ -62,7 +62,7 @@ Left unchecked, dehydration during pregnancy can contribute to low amniotic flui
 
 ### Morning Sickness and Nausea Support
 
-Morning sickness IV therapy is the most common reason pregnant clients call us. When you cannot keep water down, drinking your way back to hydration is nearly impossible. A pregnancy IV drip delivers fluids and electrolytes directly into your bloodstream, bypassing a queasy stomach entirely. Many moms describe feeling noticeably better before the bag is even finished.
+Morning sickness IV therapy is the most common reason pregnant clients call us. When you cannot keep water down, drinking your way back to hydration is nearly impossible. A pregnancy IV drip delivers fluids and electrolytes directly into your bloodstream, bypassing a queasy stomach entirely. Many moms describe feeling noticeably better before the bag is even finished. Wondering [how long IV therapy lasts and whether it works](/blog/how-long-does-iv-therapy-last/)? We break down the timing and the honest evidence here.
 
 For severe, persistent vomiting, <a href="https://www.acog.org/womens-health/faqs/morning-sickness-nausea-and-vomiting-of-pregnancy" target="_blank" rel="noopener noreferrer">ask your OB about hyperemesis gravidarum</a>. HG is a medical condition that needs physician management, and IV fluids are usually part of that treatment plan. We are happy to be part of your care team, but HG should be diagnosed and directed by your doctor.
 

@@ -88,7 +88,7 @@ Clinical settings are half the problem for a lot of people. Fluorescent lights, 
 
 Mobile IV therapy removes the setting entirely. With IV Salt Rejuvenation you are on your own couch, in your own clothes, with your own TV and your own dog. Your licensed registered nurse comes to you, works at your pace, and there is no audience and no waiting room dread. Many of our most needle-nervous clients tell us the home setting is what finally made IV therapy doable for them.
 
-Every treatment is administered by a licensed RN under medical director supervision, and nurses place IVs for a living. Experienced hands mean fewer sticks and a faster, gentler experience.
+Every treatment is administered by a licensed RN under medical director supervision, and nurses place IVs for a living. Experienced hands mean fewer sticks and a faster, gentler experience. Curious [how long an IV takes and how long it lasts](/blog/how-long-does-iv-therapy-last/)? Here is the full timing.
 
 ## When Needle Fear Is a True Phobia
 

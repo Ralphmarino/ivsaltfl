@@ -159,6 +159,11 @@ const faqLd = d.faqs?.length
   .prose-blog blockquote { border-left: 3px solid var(--color-pink); padding-left: 1.1rem; margin: 1.5rem 0; color: var(--color-cream); font-style: italic; }
   .prose-blog code { background: rgba(255,255,255,0.06); padding: 0.1rem 0.4rem; border-radius: 0.35rem; font-size: 0.9em; }
   .prose-blog img { border-radius: 1rem; margin: 1.5rem 0; }
+  /* GEO "Quick Answer" callout — a clean, quotable box for AI overviews. */
+  .prose-blog .quick-answer { border: 1px solid rgba(41, 196, 214, 0.3); background: rgba(41, 196, 214, 0.07); border-radius: 1.1rem; padding: 1.25rem 1.5rem; margin: 1.75rem 0; }
+  .prose-blog .quick-answer .qa-label { display: flex; align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.16em; font-size: 0.7rem; font-weight: 700; color: var(--color-teal-bright); margin-bottom: 0.55rem; }
+  .prose-blog .quick-answer .qa-label::before { content: ""; width: 0.55rem; height: 0.55rem; border-radius: 9999px; background: var(--color-teal-bright); box-shadow: 0 0 0 3px rgba(41, 196, 214, 0.2); }
+  .prose-blog .quick-answer p { margin: 0; color: var(--color-cream); }
   .faq-item summary::-webkit-details-marker { display: none; }
   .faq-item[open] .faq-icon { transform: rotate(45deg); border-color: rgba(41, 196, 214, 0.5); }
   .faq-item[open] { border-color: rgba(41, 196, 214, 0.3); }
