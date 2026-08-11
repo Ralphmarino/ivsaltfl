@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Icon from '../Icon.astro';
+import { readingTime, formatDate } from '../../data/author';
+
+// Latest three published posts, newest first.
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .slice(0, 3);
+---
+
+{posts.length > 0 && (
+  <section id="blog" class="relative scroll-mt-24 py-20 md:py-28">
+    <div class="container-x">
+      <div class="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end" data-reveal>
+        <div class="max-w-2xl">
+          <p class="eyebrow">From the Blog</p>
+          <h2 class="mt-4 font-display text-4xl md:text-5xl">Wellness, <span class="text-gradient">explained</span></h2>
+          <p class="mt-4 text-mist">Tips, guides, and answers on IV therapy and feeling your best — from our registered nurse.</p>
+        </div>
+        <a href="/blog" class="btn btn-ghost shrink-0">All articles <Icon name="arrow-right" size={18} /></a>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        {posts.map((post, i) => (
+          <a href={`/blog/${post.id}/`} class="card card-hover group flex flex-col overflow-hidden rounded-3xl" data-reveal data-reveal-delay={((i % 3) + 1).toString()}>
+            <div class="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-navy-800 to-ink">
+              {post.data.heroImage ? (
+                <img src={post.data.heroImage} alt={post.data.heroAlt ?? ''} width="640" height="360" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onerror="this.style.display='none'" />
+              ) : (
+                <div class="grid h-full place-items-center">
+                  <span class="grid h-16 w-16 place-items-center rounded-full bg-gradient-to-br from-teal to-pink text-white"><Icon name="drop" size={30} /></span>
+                </div>
+              )}
+              <span class="absolute left-4 top-4 rounded-full bg-navy/80 px-3 py-1 text-xs font-bold uppercase tracking-wider text-teal-bright backdrop-blur-sm">{post.data.category}</span>
+            </div>
+            <div class="flex flex-1 flex-col p-6">
+              <div class="flex items-center gap-3 text-xs text-mist-dim">
+                <span>{formatDate(post.data.publishDate)}</span>
+                <span aria-hidden="true">•</span>
+                <span class="flex items-center gap-1"><Icon name="clock" size={13} /> {readingTime(post.body ?? '')}</span>
+              </div>
+              <h3 class="mt-3 font-display text-xl leading-snug text-cream transition-colors group-hover:text-teal-bright">{post.data.title}</h3>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-mist">{post.data.description}</p>
+              <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-teal-bright">Read article <Icon name="arrow-right" size={16} /></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
