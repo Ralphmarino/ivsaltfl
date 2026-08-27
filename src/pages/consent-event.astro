@@ -1,0 +1,132 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+// Private, share-only page (not linked in nav; noindex + excluded from the
+// sitemap because the slug contains "/consent"). Deposit-free consent form for
+// events and in-person visits, used only at IV Salt Rejuvenation's direction.
+const consentUrl = 'https://ivsaltfl.com/consent-event';
+const eventFormUrl = 'https://form.jotform.com/262385439556166';
+
+const steps = [
+  {
+    icon: 'check',
+    title: 'Complete the consent form',
+    text: 'A quick medical screening and consent, required before any IV treatment. It takes about two minutes.',
+  },
+  {
+    icon: 'heart',
+    title: 'No deposit needed',
+    text: 'This event form skips the deposit entirely — just finish the consent and your nurse takes it from there.',
+  },
+];
+---
+
+<Base
+  title="Event Consent"
+  description="Deposit-free medical consent form for IV Salt Rejuvenation events and in-person visits."
+  path="/consent-event"
+  noindex={true}
+>
+  <section class="relative overflow-hidden pt-32 pb-20 md:pt-40">
+    <div class="aurora opacity-50"></div>
+    <div class="container-x relative z-10">
+      <div class="mx-auto max-w-3xl text-center" data-reveal>
+        <p class="eyebrow eyebrow-center justify-center">Event Consent · No Deposit</p>
+        <h1 class="mt-4 font-display text-4xl leading-tight md:text-5xl">
+          Complete your <span class="text-gradient">consent</span>
+        </h1>
+        <p class="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-mist">
+          Getting your IV at an event or in person? Complete your medical consent form here — no
+          deposit required. It only takes about two minutes.
+        </p>
+
+        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a
+            href={eventFormUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-primary w-full sm:w-auto"
+          >
+            Open Consent Form <Icon name="arrow-right" size={18} />
+          </a>
+          <a href={site.phoneHref} class="btn btn-ghost w-full sm:w-auto">
+            <Icon name="phone" size={18} /> {site.phone}
+          </a>
+        </div>
+        <p class="mt-3 text-xs text-mist-dim">Opens our secure consent form in a new tab.</p>
+      </div>
+
+      <!-- What happens -->
+      <div class="mx-auto mt-14 grid max-w-3xl gap-5 sm:grid-cols-2">
+        {steps.map((s, i) => (
+          <div class="card relative rounded-3xl p-6" data-reveal data-reveal-delay={i + 1}>
+            <div class="flex items-center gap-3">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-teal/25 to-pink/20 text-teal-bright">
+                <Icon name={s.icon} size={20} />
+              </span>
+              <span class="grid h-7 w-7 place-items-center rounded-full border border-white/12 font-display text-sm text-mist">{i + 1}</span>
+            </div>
+            <h2 class="mt-4 font-display text-xl text-cream">{s.title}</h2>
+            <p class="mt-2 text-sm leading-relaxed text-mist">{s.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Internal guardrail note -->
+      <div class="mx-auto mt-8 max-w-3xl rounded-2xl border border-gold/25 bg-gold/5 p-5 text-center" data-reveal>
+        <p class="flex items-center justify-center gap-2 font-display text-base text-cream">
+          <Icon name="shield" size={16} class="text-gold-bright" /> For authorized use only
+        </p>
+        <p class="mt-2 text-sm leading-relaxed text-mist">
+          This is the deposit-free consent form. Use it only at IV Salt Rejuvenation's direction — for
+          events and approved in-person visits. Standard online bookings still use the regular consent
+          form with the ${site.depositAmount} deposit.
+        </p>
+      </div>
+
+      <!-- QR + share -->
+      <div class="mx-auto mt-8 max-w-3xl" data-reveal>
+        <div class="card grid items-center gap-8 rounded-3xl p-7 sm:grid-cols-[auto_1fr] md:p-9">
+          <div class="mx-auto">
+            <div class="rounded-2xl bg-white p-4 shadow-lg shadow-black/30">
+              <img
+                src="/assets/consent-event-qr.svg"
+                alt={`QR code linking to ${consentUrl}`}
+                width="180"
+                height="180"
+                class="h-44 w-44"
+              />
+            </div>
+          </div>
+          <div class="text-center sm:text-left">
+            <p class="eyebrow">Scan or share</p>
+            <h2 class="mt-3 font-display text-2xl text-cream">Perfect for events</h2>
+            <p class="mt-2 text-sm leading-relaxed text-mist">
+              Print the code or show it on your phone so guests can scan to open this consent form.
+              Great for gym events, pop-ups, and on-site visits.
+            </p>
+            <p class="mt-4 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-navy/50 px-4 py-2 font-mono text-sm text-teal-bright">
+              <Icon name="map-pin" size={15} class="text-teal" /> ivsaltfl.com/consent-event
+            </p>
+            <div class="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
+              <a href="/assets/consent-event-qr.png" download class="btn btn-teal !px-4 !py-2.5 text-sm">
+                Download QR (print)
+              </a>
+              <a href="/assets/consent-event-qr.svg" download class="btn btn-ghost !px-4 !py-2.5 text-sm">
+                Download SVG (vector)
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-mist-dim">
+        Every IV therapy is administered by a licensed Registered Nurse under the supervision of our
+        Medical Director, {site.medicalDirector.shortName}. A completed consent form is required
+        before treatment. Questions? Call or text <a href={site.phoneHref} class="text-teal-bright hover:text-teal">{site.phone}</a>.
+      </p>
+    </div>
+  </section>
+</Base>
