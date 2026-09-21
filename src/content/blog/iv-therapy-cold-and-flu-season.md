@@ -8,6 +8,8 @@ author: "Sara A. Carroll, BSN, RN"
 byline: "Written by the IV Salt Rejuvenation team. Medically reviewed by Sara A. Carroll, BSN, RN."
 reviewedBy: "Sara A. Carroll, BSN, RN"
 authorOrg: true
+heroImage: "/assets/cold-flu-immune-iv.jpg"
+heroAlt: "Woman resting on her couch at home with cold and flu symptoms, holding a thermometer"
 draft: false
 faqs:
   - q: "Does IV therapy help with a cold or the flu?"
