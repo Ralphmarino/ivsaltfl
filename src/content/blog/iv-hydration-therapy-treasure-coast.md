@@ -52,7 +52,7 @@ Every IV Salt Rejuvenation treatment is administered by a licensed RN under the 
 
 **Rehydration after heat and activity.** This is the number one reason Treasure Coast clients call us. Long days of boating, fishing, pickleball, yard work, or outdoor jobs in Florida humidity pull a surprising amount of fluid and electrolytes out of your body. The [CDC's extreme heat guidance](https://www.cdc.gov/extreme-heat/about/index.html) notes that heat illness risk climbs quickly when fluid losses are not replaced, and coastal Florida spends much of the year in that zone.
 
-**Recovery support.** Athletes, weekend warriors, and anyone bouncing back from a long night often use IV fluids with electrolytes and B vitamins to feel functional faster than sipping water alone.
+**Recovery support.** Athletes, weekend warriors, and anyone bouncing back from a long night often use IV fluids with electrolytes and B vitamins to feel functional faster than sipping water alone. The same goes during [cold and flu season](/blog/iv-therapy-cold-and-flu-season/), when illness leaves you run down and dehydrated.
 
 **Immune and wellness support.** Formulas with vitamin C, zinc, and glutathione are popular during travel season and the winter months when snowbirds and holiday visitors fill Martin County.
 

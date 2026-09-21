@@ -49,7 +49,7 @@ Because we come to you, there is no drive, no lobby, and no sitting in a paper g
 
 ## How Fast Does IV Therapy Kick In?
 
-This is where IV therapy earns its reputation. Because fluids and nutrients go directly into your bloodstream, absorption starts immediately, with none of the 30 to 60 minute wait (or longer) that drinking fluids requires while your gut does its work. Many clients report feeling noticeably better before the bag is empty, especially when the problem is dehydration from heat, illness, a long night, or a hard workout.
+This is where IV therapy earns its reputation. Because fluids and nutrients go directly into your bloodstream, absorption starts immediately, with none of the 30 to 60 minute wait (or longer) that drinking fluids requires while your gut does its work. Many clients report feeling noticeably better before the bag is empty, especially when the problem is dehydration from heat, illness, a long night, or a hard workout. During [cold and flu season](/blog/iv-therapy-cold-and-flu-season/), that fast rehydration is the biggest help when a bug has run you down.
 
 ## How Long Does IV Therapy Last in Your Body?
 
