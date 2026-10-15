@@ -16,7 +16,7 @@ export type IconName =
   | 'heart'
   | 'molecule';
 
-/** A priced dose tier, e.g. NAD+ 250 mg at $300. */
+/** A priced dose tier, e.g. NAD+ 250 mg at $255. */
 export interface DoseOption {
   /** dose in milligrams — stable key used by the booking wizard */
   mg: number;
@@ -63,7 +63,7 @@ export const services: Service[] = [
   {
     id: 'hydration-haven',
     name: 'Hydration Haven',
-    price: 200,
+    price: 170,
     duration: '60-90 min',
     icon: 'drop',
     iconSrc: '/assets/icon-hydration.svg',
@@ -75,7 +75,7 @@ export const services: Service[] = [
     id: 'salt-sand-infusion',
     name: 'Salt & Sand Infusion',
     subtitle: 'Our Myers Cocktail',
-    price: 220,
+    price: 185,
     duration: '60-90 min',
     icon: 'palm',
     iconSrc: '/assets/icon-salt-sand.svg',
@@ -94,7 +94,7 @@ export const services: Service[] = [
   {
     id: 'immunity-wave',
     name: 'Immunity Wave',
-    price: 230,
+    price: 195,
     duration: '60-90 min',
     icon: 'shield',
     iconSrc: '/assets/icon-immunity.svg',
@@ -105,7 +105,7 @@ export const services: Service[] = [
   {
     id: 'beauty-elixir',
     name: 'Beauty Elixir',
-    price: 260,
+    price: 220,
     duration: '60-90 min',
     icon: 'sparkle',
     iconSrc: '/assets/icon-beauty-elixir.svg',
@@ -116,7 +116,7 @@ export const services: Service[] = [
   {
     id: 'recovery-therapy',
     name: 'Recovery Therapy',
-    price: 240,
+    price: 205,
     duration: '60-90 min',
     icon: 'runner',
     iconSrc: '/assets/icon-recovery.svg',
@@ -127,7 +127,7 @@ export const services: Service[] = [
   {
     id: 'nad-therapy',
     name: 'NAD+ Therapy',
-    price: 300,
+    price: 255,
     priceFrom: true,
     duration: '2-4 hours',
     icon: 'cell',
@@ -135,10 +135,10 @@ export const services: Service[] = [
     description:
       'Support cellular health, energy production & healthy aging at the cellular level.',
     doseOptions: [
-      { mg: 250, label: '250 mg', price: 300, blurb: 'Great for first-time clients or a gentle energy and mental clarity boost.' },
-      { mg: 500, label: '500 mg', price: 400, blurb: 'Most popular option for ongoing wellness and recovery.' },
-      { mg: 750, label: '750 mg', price: 500, blurb: 'A stronger step up for deeper restoration, focus, and sustained energy.' },
-      { mg: 1000, label: '1,000 mg', price: 600, blurb: 'Premium intensive therapy for experienced clients.' },
+      { mg: 250, label: '250 mg', price: 255, blurb: 'Great for first-time clients or a gentle energy and mental clarity boost.' },
+      { mg: 500, label: '500 mg', price: 340, blurb: 'Most popular option for ongoing wellness and recovery.' },
+      { mg: 750, label: '750 mg', price: 425, blurb: 'A stronger step up for deeper restoration, focus, and sustained energy.' },
+      { mg: 1000, label: '1,000 mg', price: 510, blurb: 'Premium intensive therapy for experienced clients.' },
     ],
   },
 ];
