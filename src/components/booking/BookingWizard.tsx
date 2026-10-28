@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { services, addOns, type Service, type AddOn } from '../../data/services';
+import { services, addOns, byob, type Service, type AddOn } from '../../data/services';
 import { site } from '../../data/site';
 import { Icon, Spinner } from './BookingIcons';
 
@@ -58,6 +58,7 @@ export default function BookingWizard() {
   const [nadDose, setNadDose] = useState<number>(250); // NAD+ dose in mg; defaults to 250 mg
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [boostChoices, setBoostChoices] = useState<string[]>([]);
+  const [byobChoices, setByobChoices] = useState<string[]>([]);
   const [details, setDetails] = useState<Details>(emptyDetails);
   const [partySize, setPartySize] = useState(1);
   const [hp, setHp] = useState(''); // honeypot — real users never fill this
@@ -73,8 +74,9 @@ export default function BookingWizard() {
     const preSvc = pre ? services.find((s) => s.id === pre) : undefined;
     if (preSvc) {
       setServiceId(preSvc.id);
-      // Land on the dose picker (Step 1) for dose-priced therapies; otherwise skip ahead.
-      setStep(preSvc.doseOptions ? 0 : 1);
+      // Land on Step 1 for dose-priced therapies and Build Your Own Bag (both
+      // have an in-step picker); otherwise skip ahead to add-ons.
+      setStep(preSvc.doseOptions || preSvc.id === byob.serviceId ? 0 : 1);
     }
   }, []);
 
@@ -96,6 +98,14 @@ export default function BookingWizard() {
   );
   const basePrice = selectedDose ? selectedDose.price : service?.price ?? 0;
 
+  // Build Your Own Bag: the $149 base plus individually-priced add-ins.
+  const isByob = serviceId === byob.serviceId;
+  const byobSelected = useMemo(
+    () => (isByob ? byob.options.filter((o) => byobChoices.includes(o.id)) : []),
+    [isByob, byobChoices],
+  );
+  const byobTotal = useMemo(() => byobSelected.reduce((sum, o) => sum + o.price, 0), [byobSelected]);
+
   // Extra Boost is priced per selected boost ($60 each); other add-ons are flat.
   const addOnPrice = (a: AddOn) => (a.id === 'extra-boost' ? a.price * boostChoices.length : a.price);
   const addOnLabel = (a: AddOn) =>
@@ -103,12 +113,13 @@ export default function BookingWizard() {
 
   const estTotal = useMemo(() => {
     const add = chosenAddOns.reduce((sum, a) => sum + (a.id === 'extra-boost' ? a.price * boostChoices.length : a.price), 0);
-    return basePrice + add;
-  }, [basePrice, chosenAddOns, boostChoices]);
+    return basePrice + byobTotal + add;
+  }, [basePrice, byobTotal, chosenAddOns, boostChoices]);
 
-  // Show a "~" prefix only when the total is genuinely an estimate (add-ons or
-  // multiple guests). With a dose selected, the NAD+ base price is now exact.
-  const priceEstimate = chosenAddOns.length > 0 || partySize > 1;
+  // Show a "~" prefix only when the total is genuinely an estimate (add-ons,
+  // multiple guests, or a "starting at" build-your-own add-in).
+  const priceEstimate =
+    chosenAddOns.length > 0 || partySize > 1 || byobSelected.some((o) => o.from);
 
   // Deposit is per person; state must be FL (we only serve Florida).
   const depositTotal = site.depositAmount * partySize;
@@ -162,6 +173,13 @@ export default function BookingWizard() {
   function toggleBoost(opt: string) {
     setBoostChoices((cur) => (cur.includes(opt) ? cur.filter((x) => x !== opt) : [...cur, opt]));
   }
+  function toggleByob(id: string) {
+    setByobChoices((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
+  }
+  function chooseService(id: string) {
+    setServiceId(id);
+    if (id !== byob.serviceId) setByobChoices([]); // clear build-your-own picks when leaving BYOB
+  }
   function setField<K extends keyof Details>(k: K, v: Details[K]) {
     setDetails((d) => ({ ...d, [k]: v }));
   }
@@ -189,12 +207,17 @@ export default function BookingWizard() {
             dose: selectedDose?.label ?? null,
           }
         : null,
-      addOns: chosenAddOns.map((a) => ({
-        id: a.id,
-        name: a.name,
-        price: addOnPrice(a),
-        options: a.id === 'extra-boost' ? boostChoices : undefined,
-      })),
+      addOns: [
+        // Build Your Own Bag add-ins ride along as line items so they appear on
+        // every notification (owner email, customer email, calendar).
+        ...byobSelected.map((o) => ({ id: o.id, name: o.name, price: o.price })),
+        ...chosenAddOns.map((a) => ({
+          id: a.id,
+          name: a.name,
+          price: addOnPrice(a),
+          options: a.id === 'extra-boost' ? boostChoices : undefined,
+        })),
+      ],
       partySize,
       estimatedTotal: estTotal * partySize,
       deposit: depositTotal,
@@ -353,7 +376,7 @@ export default function BookingWizard() {
                     <button
                       key={s.id}
                       type="button"
-                      onClick={() => setServiceId(s.id)}
+                      onClick={() => chooseService(s.id)}
                       aria-pressed={active}
                       className={`flex items-start gap-3 rounded-2xl border p-4 text-left transition ${
                         active ? 'border-teal-bright bg-teal/10 shadow-lg shadow-teal/10' : 'border-white/10 hover:border-white/25 hover:bg-white/[0.03]'
@@ -415,6 +438,54 @@ export default function BookingWizard() {
                       );
                     })}
                   </div>
+                </div>
+              )}
+
+              {/* Build Your Own Bag picker — appears when BYOB is selected */}
+              {isByob && (
+                <div className="mt-5 rounded-2xl border border-teal/30 bg-teal/[0.06] p-4">
+                  <p className="text-sm font-semibold text-cream">Build your bag</p>
+                  <p className="mt-0.5 text-xs text-mist">
+                    Your {money(byob.basePrice)} base is a hydration IV. Add any provider-approved extras below —
+                    your nurse confirms what's right for you before treatment.
+                  </p>
+
+                  {(['standard', 'specialty'] as const).map((group) => (
+                    <div key={group} className="mt-4">
+                      <p className="mb-2 text-[0.7rem] font-semibold uppercase tracking-wider text-mist-dim">
+                        {group === 'standard' ? 'Standard add-ins' : 'Specialty options'}
+                      </p>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        {byob.options.filter((o) => o.group === group).map((o) => {
+                          const on = byobChoices.includes(o.id);
+                          return (
+                            <button
+                              key={o.id}
+                              type="button"
+                              onClick={() => toggleByob(o.id)}
+                              aria-pressed={on}
+                              className={`flex items-center gap-2.5 rounded-xl border p-3 text-left transition ${
+                                on ? 'border-teal-bright bg-teal/10' : 'border-white/10 hover:border-white/25 hover:bg-white/[0.03]'
+                              }`}
+                            >
+                              <span className={`grid h-5 w-5 shrink-0 place-items-center rounded-md border transition ${on ? 'border-transparent bg-gradient-to-br from-teal to-pink text-white' : 'border-white/25 text-transparent'}`}>
+                                <Icon name="check" size={13} />
+                              </span>
+                              <span className="flex min-w-0 flex-1 items-baseline justify-between gap-2">
+                                <span className="truncate text-sm text-cream">{o.name}</span>
+                                <span className="shrink-0 text-sm font-bold text-gold-bright">{o.from ? 'from ' : '+'}{money(o.price)}</span>
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+
+                  <p className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-sm">
+                    <span className="text-mist">{byobSelected.length} add-in{byobSelected.length === 1 ? '' : 's'} selected</span>
+                    <span className="font-display text-base text-gold-bright">{priceEstimate ? '~' : ''}{money(byob.basePrice + byobTotal)}</span>
+                  </p>
                 </div>
               )}
             </section>
@@ -593,6 +664,22 @@ export default function BookingWizard() {
                   <span className="text-cream">{service?.name}{selectedDose ? ` · ${selectedDose.label}` : ''}</span>
                   <span className="text-gold-bright">{money(basePrice)}</span>
                 </ReviewRow>
+                {isByob && (
+                  <ReviewRow label="Bag add-ins" onEdit={() => setStep(0)}>
+                    {byobSelected.length === 0 ? (
+                      <span className="text-mist-dim">Base only</span>
+                    ) : (
+                      <ul className="space-y-1">
+                        {byobSelected.map((o) => (
+                          <li key={o.id} className="flex justify-between gap-3">
+                            <span className="text-cream">{o.name}</span>
+                            <span className="shrink-0 text-gold-bright">{o.from ? 'from ' : '+'}{money(o.price)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </ReviewRow>
+                )}
                 <ReviewRow label="Add-ons" onEdit={() => setStep(1)}>
                   {chosenAddOns.length === 0 ? (
                     <span className="text-mist-dim">None</span>
@@ -693,6 +780,12 @@ export default function BookingWizard() {
                 <span className="text-mist">Therapy</span>
                 <span className="text-right font-medium text-cream">{service ? `${service.name}${selectedDose ? ` · ${selectedDose.label}` : ''}` : <span className="text-mist-dim">Not selected</span>}</span>
               </div>
+              {byobSelected.map((o) => (
+                <div key={o.id} className="flex items-start justify-between gap-2">
+                  <span className="text-mist">+ {o.name}</span>
+                  <span className="shrink-0 text-gold-bright">{o.from ? 'from ' : ''}{money(o.price)}</span>
+                </div>
+              ))}
               {chosenAddOns.map((a) => (
                 <div key={a.id} className="flex items-start justify-between gap-2">
                   <span className="text-mist">+ {addOnLabel(a)}</span>

@@ -16,7 +16,7 @@ export type IconName =
   | 'heart'
   | 'molecule';
 
-/** A priced dose tier, e.g. NAD+ 250 mg at $255. */
+/** A priced dose tier, e.g. NAD+ 250 mg at $249. */
 export interface DoseOption {
   /** dose in milligrams — stable key used by the booking wizard */
   mg: number;
@@ -127,7 +127,7 @@ export const services: Service[] = [
   {
     id: 'nad-therapy',
     name: 'NAD+ Therapy',
-    price: 255,
+    price: 249,
     priceFrom: true,
     duration: '2-4 hours',
     icon: 'cell',
@@ -135,13 +135,58 @@ export const services: Service[] = [
     description:
       'Support cellular health, energy production & healthy aging at the cellular level.',
     doseOptions: [
-      { mg: 250, label: '250 mg', price: 255, blurb: 'Great for first-time clients or a gentle energy and mental clarity boost.' },
-      { mg: 500, label: '500 mg', price: 340, blurb: 'Most popular option for ongoing wellness and recovery.' },
-      { mg: 750, label: '750 mg', price: 425, blurb: 'A stronger step up for deeper restoration, focus, and sustained energy.' },
-      { mg: 1000, label: '1,000 mg', price: 510, blurb: 'Premium intensive therapy for experienced clients.' },
+      { mg: 250, label: '250 mg', price: 249, blurb: 'Great for first-time clients or a gentle energy and mental clarity boost.' },
+      { mg: 500, label: '500 mg', price: 329, blurb: 'Most popular option for ongoing wellness and recovery.' },
+      { mg: 750, label: '750 mg', price: 399, blurb: 'A stronger step up for deeper restoration, focus, and sustained energy.' },
+      { mg: 1000, label: '1,000 mg', price: 479, blurb: 'Premium intensive therapy for experienced clients.' },
     ],
   },
+  {
+    id: 'build-your-own-bag',
+    name: 'Build Your Own Bag',
+    subtitle: 'Base IV + your add-ins',
+    price: 149,
+    priceFrom: true,
+    duration: '60-90 min',
+    icon: 'molecule',
+    description:
+      'Start with a hydration base and personalize it with provider-approved vitamins, minerals, and specialty add-ins.',
+  },
 ];
+
+/* ------------------------------------------------------------------ *
+ *  Build Your Own Bag — a $149 hydration base the client customizes
+ *  with individually-priced add-ins. Prices per IV Salt's menu.
+ * ------------------------------------------------------------------ */
+export interface ByobOption {
+  id: string;
+  name: string;
+  price: number;
+  /** true when the price is a "starting at" figure (nurse confirms final) */
+  from?: boolean;
+  group: 'standard' | 'specialty';
+}
+
+export const byob = {
+  serviceId: 'build-your-own-bag',
+  basePrice: 149,
+  options: [
+    { id: 'byob-vitamin-c', name: 'Vitamin C', price: 30, group: 'standard' },
+    { id: 'byob-b-complex', name: 'Vitamin B Complex', price: 35, group: 'standard' },
+    { id: 'byob-mineral-blend', name: 'Mineral Blend', price: 35, group: 'standard' },
+    { id: 'byob-magnesium', name: 'Magnesium', price: 30, group: 'standard' },
+    { id: 'byob-b12', name: 'Vitamin B12', price: 30, group: 'standard' },
+    { id: 'byob-calcium', name: 'Calcium', price: 30, group: 'standard' },
+    { id: 'byob-glutathione', name: 'Glutathione', price: 35, group: 'standard' },
+    { id: 'byob-biotin', name: 'Biotin', price: 35, group: 'standard' },
+    { id: 'byob-zinc', name: 'Zinc', price: 35, group: 'standard' },
+    { id: 'byob-amino-blend', name: 'Amino Blend', price: 35, group: 'standard' },
+    { id: 'byob-myers', name: "Myers' Cocktail", price: 45, group: 'specialty' },
+    { id: 'byob-high-dose-vitamin-c', name: 'High-Dose Vitamin C', price: 50, from: true, group: 'specialty' },
+  ] as ByobOption[],
+};
+
+export const byobOptionById = (id: string) => byob.options.find((o) => o.id === id);
 
 export const addOns: AddOn[] = [
   {
