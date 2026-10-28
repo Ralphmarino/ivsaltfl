@@ -1,6 +1,10 @@
 ---
 import { services } from '../../data/services';
 import Icon from '../Icon.astro';
+
+// Build Your Own Bag is featured on its own above the standard menu.
+const byobService = services.find((s) => s.id === 'build-your-own-bag');
+const menuServices = services.filter((s) => s.id !== 'build-your-own-bag');
 ---
 
 <section id="services" class="relative scroll-mt-24 py-20 md:py-28">
@@ -16,8 +20,36 @@ import Icon from '../Icon.astro';
       </p>
     </div>
 
+    {byobService && (
+      <div class="relative mx-auto mt-12 max-w-3xl" data-reveal>
+        {/* glow */}
+        <div class="absolute -inset-[1.5px] rounded-[2rem] opacity-80 blur-[3px]" style="background: var(--grad-brand);"></div>
+        <div class="card relative overflow-hidden rounded-[2rem] p-8 text-center md:p-10">
+          <div class="aurora opacity-40"></div>
+          <div class="relative z-10 flex flex-col items-center">
+            <span class="inline-flex items-center gap-1.5 rounded-full border border-teal/30 bg-teal/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-teal-bright">
+              <Icon name="sparkle" size={13} /> Most Flexible
+            </span>
+            <span class="mt-5 grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-teal to-pink text-white shadow-lg shadow-pink/20">
+              <Icon name={byobService.icon} size={32} />
+            </span>
+            <h3 class="mt-5 font-display text-3xl text-cream md:text-4xl">{byobService.name}</h3>
+            {byobService.subtitle && <p class="mt-1 text-sm font-semibold text-teal-bright">{byobService.subtitle}</p>}
+            <p class="mx-auto mt-3 max-w-md text-sm leading-relaxed text-mist">{byobService.description}</p>
+            <div class="mt-6 flex items-baseline gap-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-mist-dim">Starting at</span>
+              <span class="font-display text-4xl text-gold-bright">${byobService.price}</span>
+            </div>
+            <a href={`/book?service=${byobService.id}`} class="btn btn-primary mt-6">
+              Build Your Bag <Icon name="arrow-right" size={18} />
+            </a>
+          </div>
+        </div>
+      </div>
+    )}
+
     <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((s, i) => (
+      {menuServices.map((s, i) => (
         <article
           class={`card card-hover group relative flex flex-col overflow-hidden p-7 ${s.featured ? 'ring-brand' : ''}`}
           data-reveal
